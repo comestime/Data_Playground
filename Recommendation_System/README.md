@@ -11,4 +11,5 @@ Recommendation results are uploaded to AWS RDS for data dashboard
 
 ## Data Dashboard
 A flaskr app is developed for data dashboard, which is later deployed in AWS EC2
+The flask app deployment can be really tricky, the detailed steps are well documented
 The dashboard will extract data from AWS RDS created in previous step
