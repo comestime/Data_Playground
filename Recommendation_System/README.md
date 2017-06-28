@@ -20,4 +20,4 @@ A simple UI looks like this:
 
 A diagram of Lambda Architecture is shown below. Currently I only implemented the batch layer and serving layer, but not speed layer/real-time processing; This would be a future improvement.
 
-[<img src="lambda-architecture.jpg">](Lambda Architecture)
+[<img src="lambda-architecture.jpg">]("Lambda Architecture")
