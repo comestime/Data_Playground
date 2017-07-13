@@ -16,8 +16,8 @@ A flaskr app is developed for data dashboard, which is later deployed in AWS EC2
 
 A simple UI looks like this:
 
-[<img src="UI.png">](UI)
+![UI](Images/UI.png)
 
 A diagram of Lambda Architecture is shown below. Currently I only implemented the batch layer and serving layer, but not speed layer/real-time processing; This would be a future improvement.
 
-[<img src="lambda-architecture.jpg">]("Lambda Architecture")
+![Lambda Architecture](Images/lambda-architecture.jpg)
