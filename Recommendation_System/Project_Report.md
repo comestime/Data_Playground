@@ -18,7 +18,7 @@ Based on the objectives, we divide the project into three phases:
 
 The following is a diagram of Lambda architecture. We mainly focus on batch layer and serving layer. The speed layer can be implemented by establishing stream data flow for incremental recommender. Note the recommendation algorithm used in this project does support streaming, but this is beyond the scope of this project.
 
-![lambda architecture](recom_proj/lambda-architecture.jpg)
+![lambda architecture](Images/lambda-architecture.jpg)
 
 
 ## 1.2 Data Collection Using Web Crawler
@@ -312,15 +312,15 @@ Recommender systems typically produce a list of recommendations in one of two wa
 
 **Collaborative filtering** methods are based on collecting and analyzing a large amount of information on users’ behaviors, activities or preferences and predicting what users will like based on their similarity to other users. A key advantage of the collaborative filtering approach is that it does not rely on machine analyzable content and therefore it is capable of accurately recommending complex items such as movies without requiring an "understanding" of the item itself. Collaborative filtering is based on the assumption that people who agreed in the past will agree in the future, and that they will like similar kinds of items as they liked in the past.
 
-![Collaborative Filtering](recom_proj/collaborative_filtering.png)
+![Collaborative Filtering](Images/collaborative_filtering.png)
 
 **Content-based filtering** methods are based on a description of the item and a profile of the user’s preferences. In a content-based recommender system, keywords are used to describe the items and a user profile is built to indicate the type of item this user likes. In other words, these algorithms try to recommend items that are similar to those that a user liked in the past (or is examining in the present). In particular, various candidate items are compared with items previously rated by the user and the best-matching items are recommended. This approach has its roots in information retrieval and information filtering research.
 
-![Content-based Filtering](recom_proj/content_based_filtering.png)
+![Content-based Filtering](Images/content_based_filtering.png)
 
 Recent research has demonstrated that a **hybrid approach**, combining collaborative filtering and content-based filtering could be more effective in some cases. Hybrid approaches can be implemented in several ways: by making content-based and collaborative-based predictions separately and then combining them; by adding content-based capabilities to a collaborative-based approach (and vice versa); or by unifying the approaches into one model. Several studies empirically compare the performance of the hybrid with the pure collaborative and content-based methods and demonstrate that the hybrid methods can provide more accurate recommendations than pure approaches. These methods can also be used to overcome some of the common problems in recommender systems such as cold start and the sparsity problem.
 
-![Hybrid Approach](recom_proj/hybrid_approach.jpg)
+![Hybrid Approach](Images/hybrid_approach.jpg)
 
 In this project, we mainly focus on collaborative filtering based recommendation. Readers are encouraged to try content-based filtering, which is typically easier to implement.
 
@@ -699,7 +699,7 @@ You should be able to successfully create the EC2 instance by following the tuto
 
 Remember to configure the security group as shown below. This setting allows access to port 80 (HTTP) from anywhere, and ssh access only from your IP address.
 
-![aws_security_group](recom_proj/aws_security_group.png)
+![aws_security_group](Images/aws_security_group.png)
 
 ### 1.4.3 Running the Flaskr App on AWS EC2
 
@@ -713,7 +713,7 @@ $ sudo apt-get install libapache2-mod-wsgi
 
 If you point your browser at your instance's public DNS name, you should see some version of the apache server's assuring "It works!" page.
 
-![apache_server_welcome_page](recom_proj/apache_server_welcome_page.png)
+![apache_server_welcome_page](Images/apache_server_welcome_page.png)
 
 Next install pip tool, and Flask package
 
@@ -738,7 +738,7 @@ $ echo "Hello World" > index.html
 
 You should now see "Hello World" displayed if you navigate to `(your instance public DNS)/flaskapp` in your browser.
 
-![flask_hello_world](recom_proj/flask_hello_world.png)
+![flask_hello_world](Images/flask_hello_world.png)
 
 Our server is now running and ready to crunch some data (if something isn't working, try checking the log file in `/var/log/apache2/error.log`).
 
@@ -765,7 +765,7 @@ WSGIScriptAlias / /var/www/html/flaskapp/flaskapp.wsgi
 </Directory>
 ```
 
-![enable_wsgi](recom_proj/enable_wsgi.png)
+![enable_wsgi](Images/enable_wsgi.png)
 
 Now use this command below to restart the server with the new configuration
 
@@ -775,7 +775,7 @@ $ sudo apachectl restart
 
 If everything works correctly, this is the UI you would see from browser
 
-![UI](recom_proj/UI.png)
+![UI](Images/UI.png)
 
 
 ## 1.5 References
