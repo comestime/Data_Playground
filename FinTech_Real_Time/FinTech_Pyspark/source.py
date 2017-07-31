@@ -4,8 +4,10 @@ import time
 
 def send_messages(producer):
 	while (1):
-		r = requests.get("http://jupyter.datalaus.net:33334/api/v1.0/FinTech/streamingdata",
-					 stream=True)
+		# r = requests.get("http://jupyter.datalaus.net:33334/api/v1.0/FinTech/streamingdata",
+		#			 stream=True)
+		r = requests.get("http://fintech.dataapplab.com:33334/api/v1.0/FinTech/streamingdata",
+						 stream=True)
 
 		# for line in r.iter_lines():
 		#	producer.send_messages('fintech', line)
