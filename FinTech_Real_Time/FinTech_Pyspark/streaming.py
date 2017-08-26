@@ -97,8 +97,9 @@ if __name__ == "__main__":
     ssc.checkpoint("checkpoint")
     hiveCtx = HiveContext(sc)
     print "Creating Hive Table..."
+	# need to match the field order in TempView "result" since the hive insertion is a simple write append to the file
     hiveCtx.sql("CREATE TABLE IF NOT EXISTS prediction \
-                (member_id INT, annual_inc INT, funded_amnt INT, data FLOAT, status STRING)")
+                (annual_inc INT, data FLOAT, funded_amnt INT, member_id INT, status STRING)")
 
     zkQuorum, topic = sys.argv[1:]
     kvs = KafkaUtils.createStream(ssc, zkQuorum, "1", {topic: 1})
