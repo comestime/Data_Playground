@@ -1,5 +1,6 @@
 import json
 import sys
+import requests
 
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
@@ -8,8 +9,8 @@ from pyspark.streaming.kafka import KafkaUtils
 from pyspark.sql import HiveContext, Row
 
 # import trained model
-from model import Model
-model = Model()
+# from model import Model
+# model = Model()
 
 
 def convert_numbers(x):
@@ -36,8 +37,12 @@ def strm_json_extraction(x):
 
 
 def strm_json_training(x):
-    """utilize the trained model to perform prediction, and return results as JSON format"""
-    prediction_json = model.getPrediction(x)
+    """Utilize the trained model to perform prediction, and return results as JSON format"""
+    # prediction_json = model.getPrediction(x)
+    r = requests.post('http://fintech.dataapplab.com:33334/api/v1.0/FinTech', json = x)
+    print r.headers
+    prediction_json = r.json()
+    print(prediction_json)
     result_json = { 'member_id' : int(x['member_id']),
                     'annual_inc' : int(x['annual_inc']),
                     'funded_amnt' : int(x['funded_amnt']),
@@ -88,20 +93,31 @@ def save2hive(time, rdd):
 if __name__ == "__main__":
 
     if len(sys.argv) < 2:
-        print("Usage: spark_meetup.py <zk> <topic>")
+        print("Usage: streaming.py <mode> <topic>")
         exit(-1)
+
+    mode, topic = sys.argv[1:]
+    if mode == 'local':
+        zkQuorum = 'localhost:2181'
+    else:
+        zkQuorum = 'm1.mt.dataapplab.com:2181'
 
     sc = SparkContext("local[2]", appName="PythonStreamingFinTech")
     sc.setLogLevel("WARN")
     ssc = StreamingContext(sc, 2)
     ssc.checkpoint("checkpoint")
     hiveCtx = HiveContext(sc)
-    print "Creating Hive Table..."
+    print "[DEBUG] Creating Hive Table..."
+    if mode == 'cluster':
+        print "[DEBUG] Use alic_db in cluster mode"
+        hiveCtx.sql("USE alick_db")
+    if mode == 'local':
+        print "[DEBUG] Drop table 'Prediction' in local mode"
+        hiveCtx.sql("DROP TABLE IF EXISTS prediction")
 	# need to match the field order in TempView "result" since the hive insertion is a simple write append to the file
     hiveCtx.sql("CREATE TABLE IF NOT EXISTS prediction \
                 (annual_inc INT, data FLOAT, funded_amnt INT, member_id INT, status STRING)")
 
-    zkQuorum, topic = sys.argv[1:]
     kvs = KafkaUtils.createStream(ssc, zkQuorum, "1", {topic: 1})
 
     # kvs.pprint()
