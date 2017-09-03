@@ -66,11 +66,9 @@ $ spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.0.1 
 
 ### Known Problem and Future Improvements
 
-1. Each worker node needs to invoke the model.py; need to make sure the model is available on each worker node
+1. Records are inserted to Hive in the granularity of RDD, generating too many small files in Hive internal table's metastore; HBase may be a better candidate of data warehouse in streaming application
 
-2. Better way to establish Hive connection from each worker node?
-
-3. Records are inserted to Hive in the granularity of RDD, generating too many small files in Hive internal table's metastore
+2. Cluster deployment still needs tuning
 
 
 ### References
