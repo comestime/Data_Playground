@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<!-- saved from url=(0098)https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/ -->
+<html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#" style=""><!--<![endif]--><head class="at-element-marker"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script async="" id="demandbase_js_lib" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/Ffkbjwm1.min.js"></script><script type="text/javascript" async="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/bf-munchkin.min.js"></script><script async="" src="https://ml314.com/tag.aspx?68"></script><script async="" src="https://ml314.com/tag.aspx?68"></script><script id="twitter-wjs" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/widgets.js"></script><script type="text/javascript" async="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/analytics.js"></script><script async="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/gtm.js"></script><script src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/satelliteLib-2b934fee5c4cb90dad47c223f80ea9c99e9761b2.js"></script><script src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/mbox-contents-a7d4d5d693a897b442d204b044f2b5c504d41d9e.js"></script><style id="at-mbox-default-style">.mboxDefault {visibility:hidden;}</style><style>.at-element-marker {visibility:visible;}</style>
+	
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="cleartype" content="on">
+	<!-- Responsive and mobile friendly stuff -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="http://blog.cloudera.com/wp-content/uploads/2015/10/favicon.ico" type="image/x-icon">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="pingback" href="https://blog.cloudera.com/xmlrpc.php">
+	<title>How-to: Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v2.3.5 - https://yoast.com/wordpress/plugins/seo/ -->
+<link rel="canonical" href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/">
+<link rel="publisher" href="https://plus.google.com/+cloudera">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How-to: Prepare Your Apache Hadoop Cluster for PySpark Jobs - Cloudera Engineering Blog">
+<meta property="og:description" content="Proper configuration of your Python environment is a critical pre-condition for using Apache Spark’s Python API.
+One of the most enticing aspects of Apache Spark for data scientists is the API it provides in non-JVM languages for Python (via PySpark) and for R (via SparkR). There are a few reasons that these language bindings have generated a lot of excitement: Most data scientists think writing Java or Scala is a drag, Read more">
+<meta property="og:url" content="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/">
+<meta property="og:site_name" content="Cloudera Engineering Blog">
+<meta property="article:publisher" content="https://www.facebook.com/cloudera/">
+<meta property="article:tag" content="analytics">
+<meta property="article:tag" content="apache">
+<meta property="article:tag" content="apache hadoop">
+<meta property="article:tag" content="Apache Spark">
+<meta property="article:tag" content="CDH">
+<meta property="article:tag" content="CentOS">
+<meta property="article:tag" content="configuration">
+<meta property="article:tag" content="data">
+<meta property="article:tag" content="devops">
+<meta property="article:tag" content="Hadoop">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="libraries">
+<meta property="article:tag" content="platform">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="R">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="Support">
+<meta property="article:section" content="CDH">
+<meta property="article:published_time" content="2015-09-24T09:07:04+00:00">
+<meta property="article:modified_time" content="2016-04-01T16:05:28+00:00">
+<meta property="og:updated_time" content="2016-04-01T16:05:28+00:00">
+<meta property="fb:admins" content="40235856597">
+<meta property="og:image" content="http://blog.cloudera.com/wp-content/uploads/2015/09/pyspark.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Proper configuration of your Python environment is a critical pre-condition for using Apache Spark’s Python API.
+One of the most enticing aspects of Apache Spark for data scientists is the API it provides in non-JVM languages for Python (via PySpark) and for R (via SparkR). There are a few reasons that these language bindings have generated a lot of excitement: Most data scientists think writing Java or Scala is a drag, Read more ">
+<meta name="twitter:title" content="How-to: Prepare Your Apache Hadoop Cluster for PySpark Jobs - Cloudera Engineering Blog">
+<meta name="twitter:site" content="@cloudera">
+<meta name="twitter:domain" content="Cloudera Engineering Blog">
+<meta name="twitter:image" content="http://blog.cloudera.com/wp-content/uploads/2015/09/pyspark.png">
+<meta name="twitter:creator" content="@kestelyn">
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Cloudera Engineering Blog » Feed" href="https://blog.cloudera.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Cloudera Engineering Blog » Comments Feed" href="https://blog.cloudera.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Cloudera Engineering Blog » How-to: Prepare Your Apache Hadoop Cluster for PySpark Jobs Comments Feed" href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/blog.cloudera.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=0a9ecc7713d92161150dfa3f17ab7e14"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,56826,8203,55356,56819),0,0),c=j.toDataURL(),b===c&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55358,56794,8205,9794,65039),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55358,56794,8203,9794,65039),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="crayon-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-theme-github-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/github.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-font-monospace-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/monospace.css" type="text/css" media="all">
+<link rel="stylesheet" id="cptch_stylesheet-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/front_end_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="dashicons-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/dashicons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="cptch_desktop_style-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/desktop_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="normalize-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/normalize.css" type="text/css" media="all">
+<link rel="stylesheet" id="fontawesome-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/font-awesome.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="gridsystem-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/grid.css" type="text/css" media="all">
+<link rel="stylesheet" id="quark-fonts-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/style.css" type="text/css" media="all">
+<script type="text/javascript" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/jquery.js"></script>
+<script type="text/javascript" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"https:\/\/blog.cloudera.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/crayon.min.js"></script>
+<script type="text/javascript" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/gtm4wp-form-move-tracker.js"></script>
+<script type="text/javascript" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/modernizr-2.8.3-min.js"></script>
+<link rel="https://api.w.org/" href="https://blog.cloudera.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://blog.cloudera.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://blog.cloudera.com/wp-includes/wlwmanifest.xml"> 
+
+<link rel="shortlink" href="https://blog.cloudera.com/?p=30054">
+<link rel="alternate" type="application/json+oembed" href="https://blog.cloudera.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://blog.cloudera.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F&amp;format=xml">
+
+<!-- Google Tag Manager for WordPress by DuracellTomi - http://duracelltomi.com -->
+<script data-cfasync="false" type="text/javascript">
+	var gtm4wp_datalayer_name = "dataLayer";
+	var dataLayer = dataLayer || [];
+	dataLayer.push({"pagePostType":"post","pagePostType2":"single-post","pageCategory":["cdh","hadoop","how-to","spark"],"pageAttributes":["analytics","apache","apache-hadoop","apache-spark","cdh","centos","configuration","data","devops","hadoop","java","libraries","platform","python","r","spark","support-2"],"pagePostAuthor":"Justin Kestelyn"});
+</script>
+<script data-cfasync="false">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.'+'js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVCKV7');</script>
+<!-- End Google Tag Manager -->
+<!-- End Google Tag Manager for WordPress by DuracellTomi -->
+<style>
+#bannercontainer { background: #ffffff url('') repeat scroll top left; }
+#footercontainer { background-color: #141414; }
+.smallprint { text-align: center; }
+</style>
+
+<style type="text/css"></style>
+
+<style type="text/css">
+.synved-social-resolution-single {
+display: inline-block;
+}
+.synved-social-resolution-normal {
+display: inline-block;
+}
+.synved-social-resolution-hidef {
+display: none;
+}
+
+@media only screen and (min--moz-device-pixel-ratio: 2),
+only screen and (-o-min-device-pixel-ratio: 2/1),
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (min-device-pixel-ratio: 2),
+only screen and (min-resolution: 2dppx),
+only screen and (min-resolution: 192dpi) {
+	.synved-social-resolution-normal {
+	display: none;
+	}
+	.synved-social-resolution-hidef {
+	display: inline-block;
+	}
+}
+</style>
+<script type="text/javascript">(function() { CQ_Analytics.TestTarget.signalDefaultOffer('target-global-mbox');})();</script><script src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/satellite-5941492364746d6ede009a4d.js"></script><script src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/satellite-58a240fc64746d2ae80074f8.js"></script><script src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/satellite-57681aa864746d63b0000d62.js"></script><script src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/s-code-contents-02992a8379e4e9e0edc5b546176530a949c36900.js"></script><script src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/satellite-580a542664746d49270078c4.js"></script><script type="text/javascript" charset="utf-8" async="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/timeline.bc7ee675e57cb01f4d1e255156414e73.js"></script></head>
+<body class="post-template-default single single-post postid-30054 single-format-standard">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>&lt;iframe src="//www.googletagmanager.com/ns.html?id=GTM-KVCKV7"
+height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+<!-- End Google Tag Manager (noscript) --><div id="wrapper" class="hfeed site">
+	<div class="visuallyhidden skip-link">
+		<a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#primary" title="Skip to main content">
+			Skip to main content		</a>
+	</div>
+	<div id="headercontainer">		
+		<header id="masthead" class="site-header row" role="banner">
+			<div class="col grid_12_of_12 site-title">
+				<nav class="mk-navigation">
+                    <!--Main Nav-->
+                    <div class="container main-menu">
+                        <!-- Brand -->
+                        <div id="cloudera-navigation">
+                            <div class="cloudera-brand">
+                                <a href="https://blog.cloudera.com/">
+                                	<img alt="Cloudera" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/cloudera-logo-white.png">
+                                </a>
+                            </div><!-- Cloudera Brand  -->
+                            <div class="cl-main-nav">
+                                <ul>
+                                    <li class="main_li close_nav npar" data-tab="products">
+                                        <a class="parent" href="https://www.cloudera.com/products.html">Products</a>
+                                    	<ul>
+                                        	<li class="main_li close_nav child" data-tab="enterprisedatahub">
+                                            	<a href="https://www.cloudera.com/products/enterprise-data-hub.html">Enterprise Data Hub</a>
+                                       		</li>
+                                        	<li class="main_li close_nav child" data-tab="analyticdb">
+                                            	<a href="https://www.cloudera.com/products/analytic-db.html">Analytic DB</a>
+                                        	</li>
+                                        	<li class="main_li close_nav child" data-tab="operationaldb">
+                                           		<a href="https://www.cloudera.com/products/operational-db.html">Operational DB</a>
+                                        	</li>
+                                        	<li class="main_li close_nav child" data-tab="datascienceengineering">
+                                            	<a href="https://www.cloudera.com/products/data-science-and-engineering.html">Data Science &amp; Engineering</a>
+                                       		</li>
+                                        	<li class="main_li close_nav child" data-tab="essentials">
+                                            	<a href="https://www.cloudera.com/products/cloudera-essentials.html">Essentials</a>
+                                        	</li>
+                                    	</ul>
+                                    </li>
+                                    <li class="main_li close_nav npar" data-tab="solutions">
+                                        <a class="parent" href="https://www.cloudera.com/solutions.html">Solutions</a>
+                                        <ul>
+                                            <li class="main_li close_nav child" data-tab="customerinsights">
+                                                <a href="https://www.cloudera.com/solutions/customer-insights.html">Customer Insights</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="improveproductsservices">
+                                                <a href="https://www.cloudera.com/solutions/improve-products-and-services.html">Improve Products &amp; Services</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="lowerbusinessrisks">
+                                                <a href="https://www.cloudera.com/solutions/lower-business-risks.html">Lower Business Risks</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="solutionsgallery">
+                                                <a href="https://www.cloudera.com/solutions/gallery.html">Solutions Gallery</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="main_li close_nav npar" data-tab="downloads">
+                                        <a class="parent" href="https://www.cloudera.com/downloads.html">Downloads</a>
+                                        <ul>
+                                            <li class="main_li close_nav child" data-tab="quickstartvms">
+                                                <a href="https://www.cloudera.com/downloads/quickstart_vms.html">QuickStart VMs</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="clouderamanager">
+                                                <a href="https://www.cloudera.com/downloads/manager.html">Cloudera Manager</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="clouderadirector">
+                                                <a href="https://www.cloudera.com/downloads/director.html">Cloudera Director</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="main_li close_nav npar" data-tab="more">
+                                        <a class="parent" href="https://blog.cloudera.com/more.html">More</a>
+                                        <ul>
+                                            <li class="main_li close_nav child" data-tab="about">
+                                                <a href="https://www.cloudera.com/more/about.html">About</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="servicessupport">
+                                                <a href="https://www.cloudera.com/more/services-and-support.html">Services &amp; Support</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="training">
+                                                <a href="https://www.cloudera.com/more/training.html">Training</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="newsevents">
+                                            	<a href="https://www.cloudera.com/more/news-and-events.html">News &amp; Events</a>
+                                            </li>
+											<li class="main_li close_nav child" data-tab="investorrelations">
+                                            	<a href="https://investors.cloudera.com/">Investor Relations</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="blogs">
+                                                <a href="https://www.cloudera.com/more/blogs.html">Blogs</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="customers">
+                                                <a href="https://www.cloudera.com/more/customers.html">Customers</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+						
+                           		<div class="cloudera-util">
+                                	<ul class="cl-util-desktop">
+                                    	<li>
+                                       		<a class="mkSearchBtn npar" href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#"><span class="glyphicon icon-search2"></span></a>
+                                    	</li>
+                               		</ul>
+                                	<ul class="cl-mobile-menu">
+                                    	<li class="cl-mobile-menu mobile-hide mk-mobile-menu-toggle">
+                                        	<a class="" href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+ 										</li>
+  									</ul>
+  									</div>
+</div>
+
+
+
+
+
+
+
+                    	</div>
+
+
+
+
+
+
+
+                	</nav>
+
+
+
+
+<div class="cloudera-mobile-nav mobile-hide">
+                    			<div class="container">
+                        			<ul>
+			                            <li class="main_li close_nav npar" data-tab="products">
+			                                <a class="parent" href="https://blog.cloudera.com/products.html">Products</a>
+			                                <ul>
+			                                    <li class="main_li close_nav child" data-tab="enterprisedatahub">
+			                                        <a href="https://www.cloudera.com/products/enterprise-data-hub.html">Enterprise Data Hub</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="analyticdb">
+			                                        <a href="https://www.cloudera.com/products/analytic-db.html">Analytic DB</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="operationaldb">
+			                                        <a href="https://www.cloudera.com/products/operational-db.html">Operational DB</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="datascienceengineering">
+			                                        <a href="https://www.cloudera.com/products/data-science-and-engineering.html">Data Science &amp; Engineering</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="essentials">
+			                                        <a href="https://www.cloudera.com/products/cloudera-essentials.html">Essentials</a>
+			                                    </li>
+			                                </ul>
+			                            </li>
+			                            <li class="main_li close_nav npar" data-tab="solutions">
+			                                <a class="parent" href="https://blog.cloudera.com/solutions.html">Solutions</a>
+			                                <ul>
+			                                    <li class="main_li close_nav child" data-tab="customerinsights">
+			                                        <a href="https://www.cloudera.com/solutions/customer-insights.html">Customer Insights</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="improveproductsservices">
+			                                        <a href="https://www.cloudera.com/solutions/improve-products-and-services.html">Improve Products &amp; Services</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="lowerbusinessrisks">
+			                                        <a href="https://www.cloudera.com/solutions/lower-business-risks.html">Lower Business Risks</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="solutionsgallery">
+			                                        <a href="https://www.cloudera.com/solutions/gallery.html">Solutions Gallery</a>
+			                                    </li>
+			                                </ul>
+			                            </li>
+			                            <li class="main_li close_nav npar" data-tab="downloads">
+			                                <a class="parent" href="https://blog.cloudera.com/downloads.html">Downloads</a>
+			                                <ul>
+			                                    <li class="main_li close_nav child" data-tab="quickstartvms">
+			                                        <a href="https://www.cloudera.com/downloads/quickstart_vms.html">QuickStart VMs</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="clouderamanager">
+			                                        <a href="https://www.cloudera.com/downloads/manager.html">Cloudera Manager</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="clouderadirector">
+			                                        <a href="https://www.cloudera.com/downloads/director.html">Cloudera Director</a>
+			                                    </li>
+			                                </ul>
+			                            </li>
+                            			<li class="main_li close_nav npar" data-tab="more">
+                               				<a class="parent" href="https://blog.cloudera.com/more.html">More</a>
+                                			<ul>
+			                                    <li class="main_li close_nav child" data-tab="about">
+			                                        <a href="https://www.cloudera.com/more/about.html">About</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="leadership">
+			                                        <a href="https://www.cloudera.com/more/leadership.html">Leadership</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="servicessupport">
+			                                        <a href="https://www.cloudera.com/more/services-and-support.html">Services &amp; Support</a>
+			                                    </li>
+			                                    <li class="main_li close_nav child" data-tab="training">
+                                                <a href="https://www.cloudera.com/more/training.html">Training</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="blogs">
+                                                <a href="https://www.cloudera.com/more/blogs.html">News &amp; Blogs</a>
+                                            </li>
+                                             <li class="main_li close_nav child" data-tab="blogs">
+                                                <a href="https://investors.cloudera.com/Investors/default.aspx.html">Investor Relations</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="customers">
+                                                <a href="https://www.cloudera.com/more/customers.html">Customers</a>
+                                            </li>
+                                            <li class="main_li close_nav child" data-tab="newsevents">
+                                                <a href="https://www.cloudera.com/more/events.html">Events</a>
+                                            </li>
+                                			</ul>
+                            			</li>
+                        			</ul>
+                    			</div>
+
+
+
+
+
+
+
+	
+			</div> <!-- /.col.grid_12_of_12 -->
+		</div></header> <!-- /#masthead.site-header.row -->
+	</div> <!-- /#headercontainer -->
+	<div id="bannercontainer">
+		<div class="banner row">
+															<div class="col grid_12_of_12">
+								<div class="widget-area" role="complementary">
+									<div id="text-6" class="widget widget_text">			<div class="textwidget"><a href="http://blog.cloudera.com/" class="banner-title"><h1>Cloudera Engineering Blog</h1></a><p>Best practices, how-tos, use cases, and internals from Cloudera Engineering and the community</p></div>
+		</div><div id="search-3" class="widget widget_search"><form role="search" method="get" id="searchform" class="searchform" action="https://blog.cloudera.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s">
+					<input type="submit" id="searchsubmit" value="Search">
+				</div>
+			</form></div>								</div> <!-- /.widget-area -->
+							</div> <!-- /.col.grid_12_of_12 -->
+						
+						</div> <!-- /.banner.row -->
+	</div> <!-- /#bannercontainer -->
+
+	<div id="maincontentcontainer">
+		
+	<div id="primary" class="site-content row" role="main">
+
+			<div class="col grid_9_of_12">
+
+				
+					
+	<article id="post-30054" class="post-30054 post type-post status-publish format-standard hentry category-cdh category-hadoop category-how-to category-spark tag-analytics tag-apache tag-apache-hadoop tag-apache-spark tag-cdh tag-centos tag-configuration tag-data tag-devops tag-hadoop tag-java tag-libraries tag-platform tag-python tag-r tag-spark tag-support-2">
+				<header class="entry-header">
+							<h1 class="entry-title">How-to: Prepare Your Apache Hadoop Cluster for PySpark Jobs</h1>
+						<div class="header-meta"><span class="meta-date"><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/" title="Posted September 24, 2015 @ 9:07 am" rel="bookmark"><time class="entry-date" datetime="2015-09-24T09:07:04+00:00" itemprop="datePublished">September 24, 2015</time></a></span><span class="meta-author"><address class="author vcard"><a class="url fn n" href="https://blog.cloudera.com/?guest-author=Juliet%20Hougland" title="View all posts by Juliet Hougland" rel="author">By Juliet Hougland</a></address></span><span class="comments-link"><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comments" title="Comment on How-to: Prepare Your Apache Hadoop Cluster for PySpark Jobs">16 Comments</a></span></div><div class="post-categories"><span class="post-categories-title">Categories: </span> <a href="https://blog.cloudera.com/blog/category/cdh/" rel="category tag">CDH</a> <a href="https://blog.cloudera.com/blog/category/hadoop/" rel="category tag">Hadoop</a> <a href="https://blog.cloudera.com/blog/category/how-to/" rel="category tag">How-to</a> <a href="https://blog.cloudera.com/blog/category/spark/" rel="category tag">Spark</a></div>					</header> <!-- /.entry-header -->
+
+					<div class="entry-content entry-content-single">
+				<p><strong>Proper configuration of your Python environment is a critical pre-condition for using Apache Spark’s Python API.</strong></p>
+<p>One of the most enticing aspects of Apache Spark for data scientists is the API it provides in non-JVM languages for Python (via <a href="http://spark.apache.org/docs/latest/api/python/">PySpark</a>) and for R (via <a href="https://spark.apache.org/docs/latest/sparkr.html">SparkR</a>). There are a few reasons that these language bindings have generated a lot of excitement: Most data scientists think writing Java or Scala is a drag, they already know Python or R, or don’t want to learn a new language to write code for distributed computing. Most important, these languages already have a rich variety of numerical libraries with a statistical, machine learning, or optimization focus. </p>
+<p>Like everything in engineering, there are tradeoffs to be made when picking these non-JVM languages for your Spark code. Java offers advantages like platform independence by running inside the JVM, self-contained packaging of code and its dependencies into JAR files, and higher performance since Spark itself runs in the JVM. If you chose to use Python, users lose such advantages. In particular, managing dependencies and making them available for PySpark jobs on a cluster can be a pain. In this blog post, I will explain what your options are.</p>
+<p>To determine what dependencies are required on the cluster ahead of time, it is important to understand where different parts of Spark code get executed and how computation is distributed on the cluster. Spark orchestrates its operations via the driver program. The driver program initializes a <a href="http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.SparkContext">SparkContext</a>, in which you define your data actions and transformations, e.g. <code>map</code>, <code>flatMap</code>, and <code>filter</code>. When the driver program is run, the Spark framework initializes executor processes on the worker nodes that then process your data across the cluster.</p>
+<p align="center"><img src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/pyspark.png" alt="" title="pyspark" width="460" height="358"></p>
+<h2>Self-contained Dependency</h2>
+<p>If the Python transformations you define use any third-party libraries, like <a href="http://www.numpy.org/">NumPy</a> or <a href="http://www.nltk.org/">nltk</a>, then the Spark executors will need access to those libraries when they execute your code on the remote worker nodes. A common situation is one where we have our own custom Python package that contains functionality we would like to apply to each element of our RDD. A simple example of this is illustrated below. I assume a <code>SparkContext</code> is already initialized as <code>sc</code>, as in the PySpark shell.</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-59afb2c106844323004806" class="crayon-syntax crayon-theme-github crayon-font-monospace crayon-os-mac print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 800px; margin-top: 12px; margin-bottom: 12px; font-size: 16px !important; line-height: 19px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 22.4px !important; line-height: 22.4px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 16px !important; line-height: 19px !important; z-index: 0; opacity: 0; overflow: hidden;">def import_my_special_package(x):
+&nbsp;&nbsp;&nbsp; import my.special.package
+&nbsp;&nbsp;&nbsp; return x
+
+conf = SparkConf()
+sc = SparkContext()
+int_rdd = sc.parallelize([1, 2, 3, 4])
+int_rdd.map(lambda x: import_my_special_package(x))
+int_rdd.collect()</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 800px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -22px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 16px !important; line-height: 19px !important;"><div class="crayon-num" data-line="crayon-59afb2c106844323004806-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106844323004806-2">2</div><div class="crayon-num" data-line="crayon-59afb2c106844323004806-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106844323004806-4">4</div><div class="crayon-num" data-line="crayon-59afb2c106844323004806-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106844323004806-6">6</div><div class="crayon-num" data-line="crayon-59afb2c106844323004806-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106844323004806-8">8</div><div class="crayon-num" data-line="crayon-59afb2c106844323004806-9">9</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 16px !important; line-height: 19px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-59afb2c106844323004806-1"><span class="crayon-e">def </span><span class="crayon-e">import_my_special_package</span><span class="crayon-sy">(</span><span class="crayon-v">x</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106844323004806-2">&nbsp;&nbsp;&nbsp;<span class="crayon-h"> </span><span class="crayon-e">import </span><span class="crayon-v">my</span><span class="crayon-sy">.</span><span class="crayon-v">special</span><span class="crayon-sy">.</span><span class="crayon-t">package</span></div><div class="crayon-line" id="crayon-59afb2c106844323004806-3">&nbsp;&nbsp;&nbsp;<span class="crayon-h"> </span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-i">x</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106844323004806-4">&nbsp;</div><div class="crayon-line" id="crayon-59afb2c106844323004806-5"><span class="crayon-v">conf</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">SparkConf</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106844323004806-6"><span class="crayon-v">sc</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">SparkContext</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59afb2c106844323004806-7"><span class="crayon-v">int_rdd</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">sc</span><span class="crayon-sy">.</span><span class="crayon-e">parallelize</span><span class="crayon-sy">(</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">2</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">3</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">4</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106844323004806-8"><span class="crayon-v">int_rdd</span><span class="crayon-sy">.</span><span class="crayon-e">map</span><span class="crayon-sy">(</span><span class="crayon-i">lambda</span><span class="crayon-h"> </span><span class="crayon-v">x</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">import_my_special_package</span><span class="crayon-sy">(</span><span class="crayon-v">x</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59afb2c106844323004806-9"><span class="crayon-v">int_rdd</span><span class="crayon-sy">.</span><span class="crayon-e">collect</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0028 seconds] -->
+<p></p>
+<p>After creating a <code>SparkContext</code>, you create a simple <code>rdd</code> of four elements and call it <code>int_rdd</code>. Then you apply the function <code>import_my_special_package</code> to every element of the <code>int_rdd</code>. This function just imports <code>my.special.package</code> and then returns the original argument passed to it. This has the same effect as using classes or functions defined in <code>my.special.package</code> because Spark requires that each Spark executor can import <code>my.special.package</code> when its functionality is needed.</p>
+<p>If you only need a single file inside <code>my.special.package</code> you may direct Spark to make this available to all executors by using the <code>--py-files</code> option in your <code>spark-submit</code> command and specifying the local path to the file. You may also specify this programmatically by using the <code>sc.addPyFiles()</code> function. If you use functionality from a package that spans multiple files in it, you will be better off <a href="https://pythonhosted.org/setuptools/setuptools.html">making an *.egg for the package</a><a href="https://pythonhosted.org/setuptools/setuptools.html">,</a> as the <code>--py-files</code> flag also accepts a path to an egg file. (Caveat: if your package depends on compiled code and machines in your cluster have different CPU architectures than the code you compile your egg on, this will not work.)</p>
+<p>In short, if you have a <em>self-contained</em> dependency there are a two ways that you can make required Python dependency available to your executors: </p>
+<ul>
+<li>If you only depend on a single file, you can use either the <code>--py-files</code> command line option or programmatically add them to the <code>SparkContext</code> with <code>sc.addPyFiles(path)</code> and specify the local path to that Python file.</li>
+<li>If you have have a dependency on a self contained module (meaning a module with no other dependencies) you can create an egg or zip file of that module and use either the <code>--py-files</code> command line option or programmatically add them to the <code>SparkContext</code> with <code>sc.addPyFiles(path)</code> and specify the local path to that egg or zip file.</li>
+</ul>
+<h2>Complex Dependency</h2>
+<p>If the operations you want to apply in a distributed way rely on complex packages that themselves have many dependencies, you have a real challenge. Let’s take the simple snippet below as an example:</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-59afb2c106854753217781" class="crayon-syntax crayon-theme-github crayon-font-monospace crayon-os-mac print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 800px; margin-top: 12px; margin-bottom: 12px; font-size: 16px !important; line-height: 19px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 22.4px !important; line-height: 22.4px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 16px !important; line-height: 19px !important; z-index: 0; opacity: 0; overflow: hidden;">from pyspark import SparkContext, SparkConf
+
+def import_pandas(x):
+&nbsp;&nbsp;&nbsp; import pandas
+&nbsp;&nbsp;&nbsp; return x
+
+conf = SparkConf()
+sc = SparkContext()
+int_rdd = sc.parallelize([1, 2, 3, 4])
+int_rdd.map(lambda x: import_pandas(x))
+int_rdd.map(lambda x: import_pandas(x)).collect()</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 800px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -32px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 16px !important; line-height: 19px !important;"><div class="crayon-num" data-line="crayon-59afb2c106854753217781-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106854753217781-2">2</div><div class="crayon-num" data-line="crayon-59afb2c106854753217781-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106854753217781-4">4</div><div class="crayon-num" data-line="crayon-59afb2c106854753217781-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106854753217781-6">6</div><div class="crayon-num" data-line="crayon-59afb2c106854753217781-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106854753217781-8">8</div><div class="crayon-num" data-line="crayon-59afb2c106854753217781-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106854753217781-10">10</div><div class="crayon-num" data-line="crayon-59afb2c106854753217781-11">11</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 16px !important; line-height: 19px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-59afb2c106854753217781-1"><span class="crayon-e">from </span><span class="crayon-e">pyspark </span><span class="crayon-e">import </span><span class="crayon-v">SparkContext</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">SparkConf</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106854753217781-2">&nbsp;</div><div class="crayon-line" id="crayon-59afb2c106854753217781-3"><span class="crayon-e">def </span><span class="crayon-e">import_pandas</span><span class="crayon-sy">(</span><span class="crayon-v">x</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106854753217781-4">&nbsp;&nbsp;&nbsp;<span class="crayon-h"> </span><span class="crayon-e">import </span><span class="crayon-i">pandas</span></div><div class="crayon-line" id="crayon-59afb2c106854753217781-5">&nbsp;&nbsp;&nbsp;<span class="crayon-h"> </span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-i">x</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106854753217781-6">&nbsp;</div><div class="crayon-line" id="crayon-59afb2c106854753217781-7"><span class="crayon-v">conf</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">SparkConf</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106854753217781-8"><span class="crayon-v">sc</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">SparkContext</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59afb2c106854753217781-9"><span class="crayon-v">int_rdd</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">sc</span><span class="crayon-sy">.</span><span class="crayon-e">parallelize</span><span class="crayon-sy">(</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">2</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">3</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">4</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106854753217781-10"><span class="crayon-v">int_rdd</span><span class="crayon-sy">.</span><span class="crayon-e">map</span><span class="crayon-sy">(</span><span class="crayon-i">lambda</span><span class="crayon-h"> </span><span class="crayon-v">x</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">import_pandas</span><span class="crayon-sy">(</span><span class="crayon-v">x</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59afb2c106854753217781-11"><span class="crayon-v">int_rdd</span><span class="crayon-sy">.</span><span class="crayon-e">map</span><span class="crayon-sy">(</span><span class="crayon-i">lambda</span><span class="crayon-h"> </span><span class="crayon-v">x</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">import_pandas</span><span class="crayon-sy">(</span><span class="crayon-v">x</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">collect</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0044 seconds] -->
+<p></p>
+<p>Again, all we are doing is importing <a href="http://pandas.pydata.org/">pandas</a>. Pandas depends on NumPy, SciPy, and many other packages. We have a problem here because we cannot make an egg that contains all of the required dependencies. Instead, we need to have the required Python environment already set up on the cluster and the Spark executors configured to use that Python environment.</p>
+<p>Now, let’s consider our options for making these libraries available. While pandas is too complex to just distribute a *.py file that contains the functionality we need, we could theoretically create an *.egg for it and try shipping it off to executors with the <code>--py-files</code> option on the command line or <code>#addPyFiles()</code> on a <code>SparkContext</code>. A major issue with this approach is that *.egg files for packages containing native code (which most numerically oriented Python packages do) must be compiled for the specific machine it will run on.</p>
+<p>An assumption that anyone doing distributed computing with commodity hardware must assume is that the underlying hardware is potentially heterogeneous. A Python egg built on a client machine will be specific to the client’s CPU architecture because of the required C compilation. Distributing an egg for a complex, compiled package like NumPy, SciPy, or pandas is a brittle solution that is likely to fail on most clusters, at least eventually. This means we should prefer the alternative approach: have our required Python packages already installed on each node of the cluster and specify the path to the Python binaries for the worker nodes to use.</p>
+<p>As long as the Python installations you want to use are in a consistent location on your cluster, you can set the <code>PYSPARK_PYTHON</code> environment variable to the path to your Python executables and Spark will use those as the Python installations your executors. You can set this environment variable on a per-session basis by executing the following line of the command line:</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-59afb2c10685d227223505" class="crayon-syntax crayon-theme-github crayon-font-monospace crayon-os-mac print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 800px; margin-top: 12px; margin-bottom: 12px; font-size: 16px !important; line-height: 19px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 22.4px !important; line-height: 22.4px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 16px !important; line-height: 19px !important; z-index: 0; opacity: 0; overflow: hidden;">export PYSPARK_PYTHON=/path/to/python</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 800px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -22px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 16px !important; line-height: 19px !important;"><div class="crayon-num" data-line="crayon-59afb2c10685d227223505-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 16px !important; line-height: 19px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-59afb2c10685d227223505-1"><span class="crayon-e">export </span><span class="crayon-v">PYSPARK_PYTHON</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-v">path</span><span class="crayon-o">/</span><span class="crayon-st">to</span><span class="crayon-o">/</span><span class="crayon-v">python</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0007 seconds] -->
+<p></p>
+<p>If you would like to consistently use this <code>PYSPARK_PYTHON</code> definition, you can add that line to your spark-env.sh. In CDH this script is located at <code>/etc/spark/conf/spark-env.sh</code> (and at <code>/opt/cloudera/parcels/CDH/lib/spark/conf</code> if you’re using parcels). If you set <code>PYSPARK_PYTHON</code> in spark-env.sh, you should check that users have not set this environment variable already with the following lines:</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-59afb2c106864858017009" class="crayon-syntax crayon-theme-github crayon-font-monospace crayon-os-mac print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 800px; margin-top: 12px; margin-bottom: 12px; font-size: 16px !important; line-height: 19px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 22.4px !important; line-height: 22.4px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 16px !important; line-height: 19px !important; z-index: 0; opacity: 0; overflow: hidden;">if [ -z "${PYSPARK_PYTHON}" ]; then
+  export PYSPARK_PYTHON=&lt;path&gt;
+fi</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 800px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -22px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 16px !important; line-height: 19px !important;"><div class="crayon-num" data-line="crayon-59afb2c106864858017009-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c106864858017009-2">2</div><div class="crayon-num" data-line="crayon-59afb2c106864858017009-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 16px !important; line-height: 19px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-59afb2c106864858017009-1"><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">[</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">z</span><span class="crayon-h"> </span><span class="crayon-s">"${PYSPARK_PYTHON}"</span><span class="crayon-h"> </span><span class="crayon-sy">]</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-st">then</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c106864858017009-2"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-e">export </span><span class="crayon-v">PYSPARK_PYTHON</span><span class="crayon-o">=</span><span class="crayon-o">&lt;</span><span class="crayon-v">path</span><span class="crayon-o">&gt;</span></div><div class="crayon-line" id="crayon-59afb2c106864858017009-3"><span class="crayon-v">fi</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0013 seconds] -->
+<p></p>
+<p>If you have complex dependencies like pandas or SciPy, you can create the required Python environment on each node of your cluster and set <code>PYSPARK_PYTHON</code> to the path to the associated Python executable.</p>
+<h2>Installing and Maintaining Python Environments</h2>
+<p>Installing and maintaining Python environments on a cluster is not an easy task, but it is the best solution that allows making full use of the Python package ecosystem with PySpark. In the best possible world, you have a good relationship with your local sysadmin and they are able and willing to set up a <a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> or install the <a href="https://store.continuum.io/cshop/anaconda/">Anaconda distribution of Python</a> on every node of your cluster, with your required dependencies. If you are a data scientist responsible for administering your own cluster, you may need to get creative about setting up your required Python environment on your cluster. If you have sysadmin or devops support for your cluster, use it! They are professionals who know what they are doing. If you are on your own, the following, somewhat fragile, instructions may be useful to you.</p>
+<p>If you aren’t yet worrying about long term maintainability and just need to get a Python environment set up yourself, you could take the less maintainable path of setting up virtual environments on your cluster by executing commands on each machine using <a href="http://sourceforge.net/projects/clusterssh/">Cluster SSH</a>, <a href="http://code.google.com/p/parallel-ssh/">Parallel SSH</a>, or <a href="http://docs.fabfile.org/en/1.10/">Fabric</a>.</p>
+<p>As an example, I provide instructions for setting up the a standard data stack (including SciPy, NumPy, scikit-learn and pandas) in a virtualenv on a CentOS 6/RHEL 6 system, assuming you have logged into every node in your cluster using cluster <code>ssh</code> and each node has Python and <code>pip</code> installed. (Note that you may need <code>sudo</code> access in order to install packages, like LAPACK and BLAS, in the operating system.):</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-59afb2c10686c967045922" class="crayon-syntax crayon-theme-github crayon-font-monospace crayon-os-mac print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 800px; margin-top: 12px; margin-bottom: 12px; font-size: 16px !important; line-height: 19px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 16px !important;height: 24px !important; line-height: 24px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon" style="background-size: 48px 128px; background-image: url(&quot;https://blog.cloudera.com/wp-content/plugins/crayon-syntax-highlighter/css/images/toolbar/buttons@2x.png&quot;);"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 22.4px !important; line-height: 22.4px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 16px !important; line-height: 19px !important; z-index: 0; opacity: 0; overflow: hidden;"># install virtualenv:
+pip install virtualenv
+# create a new virtualenv:
+virtualenv &lt;mynewenv&gt;
+# Install SciPy required non-python dependencies that are not installed on CentOS by default:
+yum install atlas atlas-devel lapack-devel blas-devel
+pip install scipy
+pip install numpy
+pip install scikit-learn
+pip install pandas</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 800px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -32px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 16px !important; line-height: 19px !important;"><div class="crayon-num" data-line="crayon-59afb2c10686c967045922-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c10686c967045922-2">2</div><div class="crayon-num" data-line="crayon-59afb2c10686c967045922-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c10686c967045922-4">4</div><div class="crayon-num" data-line="crayon-59afb2c10686c967045922-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c10686c967045922-6">6</div><div class="crayon-num" data-line="crayon-59afb2c10686c967045922-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c10686c967045922-8">8</div><div class="crayon-num" data-line="crayon-59afb2c10686c967045922-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-59afb2c10686c967045922-10">10</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 16px !important; line-height: 19px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-59afb2c10686c967045922-1"><span class="crayon-p"># install virtualenv:</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c10686c967045922-2"><span class="crayon-e">pip </span><span class="crayon-e">install </span><span class="crayon-v">virtualenv</span></div><div class="crayon-line" id="crayon-59afb2c10686c967045922-3"><span class="crayon-p"># create a new virtualenv:</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c10686c967045922-4"><span class="crayon-v">virtualenv</span><span class="crayon-h"> </span><span class="crayon-o">&lt;</span><span class="crayon-v">mynewenv</span><span class="crayon-o">&gt;</span></div><div class="crayon-line" id="crayon-59afb2c10686c967045922-5"><span class="crayon-p"># Install SciPy required non-python dependencies that are not installed on CentOS by default:</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c10686c967045922-6"><span class="crayon-e">yum </span><span class="crayon-e">install </span><span class="crayon-e">atlas </span><span class="crayon-v">atlas</span><span class="crayon-o">-</span><span class="crayon-e">devel </span><span class="crayon-v">lapack</span><span class="crayon-o">-</span><span class="crayon-e">devel </span><span class="crayon-v">blas</span><span class="crayon-o">-</span><span class="crayon-e">devel</span></div><div class="crayon-line" id="crayon-59afb2c10686c967045922-7"><span class="crayon-e">pip </span><span class="crayon-e">install </span><span class="crayon-e">scipy</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c10686c967045922-8"><span class="crayon-e">pip </span><span class="crayon-e">install </span><span class="crayon-e">numpy</span></div><div class="crayon-line" id="crayon-59afb2c10686c967045922-9"><span class="crayon-e">pip </span><span class="crayon-e">install </span><span class="crayon-v">scikit</span><span class="crayon-o">-</span><span class="crayon-e">learn</span></div><div class="crayon-line crayon-striped-line" id="crayon-59afb2c10686c967045922-10"><span class="crayon-e">pip </span><span class="crayon-e">install </span><span class="crayon-v">pandas</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0019 seconds] -->
+<p></p>
+<p>Once you have a virtualenv setup in a uniform location on each node in your cluster, you can use it as the Python executable for your Spark executors by setting the <code>PYSPARK_PYTHON</code> environment variable to <code>/path/to/mynewenv/bin/python</code>.</p>
+<p>This is not particularly simple or easily maintainable. In a follow-up post I will discuss other options for creating and maintaining Python environments on a CDH cluster.</p>
+<h5>Acknowledgements</h5>
+<p>Thanks to Uri Laserson for his invaluable feedback on the blog post. Additional thanks to Sean Owen, Sandy Ryza, Mark Grover, Alex Moundalexis, and Stephanie Bodoff.</p>
+<p><em>Juliet is a Data Scientist at Cloudera, and contributor/committer/maintainer for the Sparkling Pandas project. Juliet was the technical editor for&nbsp;</em><a href="http://shop.oreilly.com/product/0636920028512.do">Learning Spark</a><em> by Karau et al. and&nbsp;</em><a href="http://shop.oreilly.com/product/0636920035091.do">Advanced Analytics with Spark</a><em>&nbsp;by Ryza et al. </em></p>
+<a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-normal synved-social-provider-facebook nolightbox" data-provider="facebook" target="_blank" rel="nofollow" title="Share on Facebook" href="http://www.facebook.com/sharer.php?u=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F&amp;t=How-to%3A%20Prepare%20Your%20Apache%20Hadoop%20Cluster%20for%20PySpark%20Jobs&amp;s=100&amp;p[url]=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F&amp;p[images][0]=http%3A%2F%2Fblog.cloudera.com%2Fwp-content%2Fuploads%2F2015%2F09%2Fpyspark.png&amp;p[title]=How-to%3A%20Prepare%20Your%20Apache%20Hadoop%20Cluster%20for%20PySpark%20Jobs" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;margin-right:5px;"><img alt="Facebook" title="Share on Facebook" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/facebook.png"></a><a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-normal synved-social-provider-twitter nolightbox" data-provider="twitter" target="_blank" rel="nofollow" title="Share on Twitter" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F&amp;text=I%20just%20read%20this%20in%20the%20%40ClouderaEng%20blog%3A" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;margin-right:5px;"><img alt="twitter" title="Share on Twitter" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/twitter.png"></a><a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-normal synved-social-provider-google_plus nolightbox" data-provider="google_plus" target="_blank" rel="nofollow" title="Share on Google+" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;margin-right:5px;"><img alt="google_plus" title="Share on Google+" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/google_plus.png"></a><a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-normal synved-social-provider-linkedin nolightbox" data-provider="linkedin" target="_blank" rel="nofollow" title="Share on Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F&amp;title=How-to%3A%20Prepare%20Your%20Apache%20Hadoop%20Cluster%20for%20PySpark%20Jobs" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;margin-right:5px;"><img alt="linkedin" title="Share on Linkedin" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/linkedin.png"></a><a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-normal synved-social-provider-mail nolightbox" data-provider="mail" rel="nofollow" title="Share by email" href="mailto:?subject=How-to%3A%20Prepare%20Your%20Apache%20Hadoop%20Cluster%20for%20PySpark%20Jobs&amp;body=I%20just%20read%20this%20in%20the%20%40ClouderaEng%20blog%3A:%20https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;"><img alt="mail" title="Share by email" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/mail.png"></a><a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-hidef synved-social-provider-facebook nolightbox" data-provider="facebook" target="_blank" rel="nofollow" title="Share on Facebook" href="http://www.facebook.com/sharer.php?u=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F&amp;t=How-to%3A%20Prepare%20Your%20Apache%20Hadoop%20Cluster%20for%20PySpark%20Jobs&amp;s=100&amp;p[url]=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F&amp;p[images][0]=http%3A%2F%2Fblog.cloudera.com%2Fwp-content%2Fuploads%2F2015%2F09%2Fpyspark.png&amp;p[title]=How-to%3A%20Prepare%20Your%20Apache%20Hadoop%20Cluster%20for%20PySpark%20Jobs" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;margin-right:5px;"><img alt="Facebook" title="Share on Facebook" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/facebook(1).png"></a><a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-hidef synved-social-provider-twitter nolightbox" data-provider="twitter" target="_blank" rel="nofollow" title="Share on Twitter" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F&amp;text=I%20just%20read%20this%20in%20the%20%40ClouderaEng%20blog%3A" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;margin-right:5px;"><img alt="twitter" title="Share on Twitter" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/twitter(1).png"></a><a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-hidef synved-social-provider-google_plus nolightbox" data-provider="google_plus" target="_blank" rel="nofollow" title="Share on Google+" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;margin-right:5px;"><img alt="google_plus" title="Share on Google+" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/google_plus(1).png"></a><a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-hidef synved-social-provider-linkedin nolightbox" data-provider="linkedin" target="_blank" rel="nofollow" title="Share on Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F&amp;title=How-to%3A%20Prepare%20Your%20Apache%20Hadoop%20Cluster%20for%20PySpark%20Jobs" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;margin-right:5px;"><img alt="linkedin" title="Share on Linkedin" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/linkedin(1).png"></a><a class="synved-social-button synved-social-button-share synved-social-size-32 synved-social-resolution-hidef synved-social-provider-mail nolightbox" data-provider="mail" rel="nofollow" title="Share by email" href="mailto:?subject=How-to%3A%20Prepare%20Your%20Apache%20Hadoop%20Cluster%20for%20PySpark%20Jobs&amp;body=I%20just%20read%20this%20in%20the%20%40ClouderaEng%20blog%3A:%20https%3A%2F%2Fblog.cloudera.com%2Fblog%2F2015%2F09%2Fhow-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs%2F" style="font-size: 0px; width:32px;height:32px;margin:0;margin-bottom:5px;"><img alt="mail" title="Share by email" class="synved-share-image synved-social-image synved-social-image-share" width="32" height="32" style="display: inline; width:32px;height:32px; margin: 0; padding: 0; border: none; box-shadow: none;" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/mail(1).png"></a>							</div> <!-- /.entry-content -->
+		
+		<footer class="entry-meta">
+			<i class="fa fa-tag"></i> <span class="post-tags"><a href="https://blog.cloudera.com/blog/tag/analytics/" rel="tag">analytics</a> <a href="https://blog.cloudera.com/blog/tag/apache/" rel="tag">apache</a> <a href="https://blog.cloudera.com/blog/tag/apache-hadoop/" rel="tag">apache hadoop</a> <a href="https://blog.cloudera.com/blog/tag/apache-spark/" rel="tag">Apache Spark</a> <a href="https://blog.cloudera.com/blog/tag/cdh/" rel="tag">CDH</a> <a href="https://blog.cloudera.com/blog/tag/centos/" rel="tag">CentOS</a> <a href="https://blog.cloudera.com/blog/tag/configuration/" rel="tag">configuration</a> <a href="https://blog.cloudera.com/blog/tag/data/" rel="tag">data</a> <a href="https://blog.cloudera.com/blog/tag/devops/" rel="tag">devops</a> <a href="https://blog.cloudera.com/blog/tag/hadoop/" rel="tag">Hadoop</a> <a href="https://blog.cloudera.com/blog/tag/java/" rel="tag">java</a> <a href="https://blog.cloudera.com/blog/tag/libraries/" rel="tag">libraries</a> <a href="https://blog.cloudera.com/blog/tag/platform/" rel="tag">platform</a> <a href="https://blog.cloudera.com/blog/tag/python/" rel="tag">python</a> <a href="https://blog.cloudera.com/blog/tag/r/" rel="tag">R</a> <a href="https://blog.cloudera.com/blog/tag/spark/" rel="tag">spark</a> <a href="https://blog.cloudera.com/blog/tag/support-2/" rel="tag">Support</a></span>			
+
+			
+
+
+		</footer> <!-- /.entry-meta -->
+	</article> <!-- /#post -->
+
+					
+<section id="comments" class="comments-area">
+
+	
+			<h2 class="comments-title">
+			16 responses on “<span>How-to: Prepare Your Apache Hadoop Cluster for PySpark Jobs</span>”		</h2>
+
+		<ol class="commentlist">
+						<li class="comment even thread-even depth-1" id="li-comment-70102">
+				<article id="comment-70102" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/a04fadac5cce41e798158154e8670023" srcset="https://secure.gravatar.com/avatar/a04fadac5cce41e798158154e8670023?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Jon </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-70102" title="Posted September 24, 2015 @ 8:54 pm"><time itemprop="datePublished" datetime="2015-09-24T20:54:57+00:00">September 24, 2015 at 8:54 pm</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Thanks for this.  It would be interesting to hear your thoughts on how to organize deployment of different virtualenvs to cluster nodes.  This comes up when clients on a single cluster have requirements for e.g. different versions of pandas or similar libraries.</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-70403">
+				<article id="comment-70403" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/2868b3cb44e6e28695689f46e475c3b8" srcset="https://secure.gravatar.com/avatar/2868b3cb44e6e28695689f46e475c3b8?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Dmitry </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-70403" title="Posted September 29, 2015 @ 8:13 am"><time itemprop="datePublished" datetime="2015-09-29T08:13:37+00:00">September 29, 2015 at 8:13 am</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Hi Juliet,</p>
+<p>Thank you, this is a very helpful post. I have a question though – assuming I have a homogeneous environment, can I just create a Python installation on a network share and mount it to all the nodes? Do you think it will work?</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment even thread-even depth-1" id="li-comment-70654">
+				<article id="comment-70654" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/9dd15286d493f37d8cdbd5bbccbcdde1" srcset="https://secure.gravatar.com/avatar/9dd15286d493f37d8cdbd5bbccbcdde1?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Pete </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-70654" title="Posted October 4, 2015 @ 5:10 am"><time itemprop="datePublished" datetime="2015-10-04T05:10:18+00:00">October 4, 2015 at 5:10 am</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Yes would also be interested in ways to support multiple virtualenvs on a shared cluster. Any thoughts on this?</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-70759">
+				<article id="comment-70759" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/c1dcd6d9486f6f14b2775a913c28f032" srcset="https://secure.gravatar.com/avatar/c1dcd6d9486f6f14b2775a913c28f032?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn"><a href="http://eventhorizoncapital.com/" rel="external nofollow" class="url">Harry</a> </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-70759" title="Posted October 6, 2015 @ 6:48 am"><time itemprop="datePublished" datetime="2015-10-06T06:48:56+00:00">October 6, 2015 at 6:48 am</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Hi Juliet,</p>
+<p>Thanks for this very clear explanation.  You’ve got me thinking of several follow up questions:</p>
+<p>1.  Does this problem go away if one uses a cloud-based cluster?</p>
+<p>2.  There must be a similar problem using R on Spark.  Are there similar solutions?</p>
+<p>3.  Does Scala enjoy a home field advantage, because the libraries are already included in Spark?</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment even thread-even depth-1" id="li-comment-71218">
+				<article id="comment-71218" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/31a12548cca7e67ca25bb045435be3d5" srcset="https://secure.gravatar.com/avatar/31a12548cca7e67ca25bb045435be3d5?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn"><a href="http://blog.light42.com/" rel="external nofollow" class="url">darkblue_b</a> </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-71218" title="Posted October 7, 2015 @ 8:30 pm"><time itemprop="datePublished" datetime="2015-10-07T20:30:05+00:00">October 7, 2015 at 8:30 pm</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>hmm, if all your compute nodes are the same kind of linux, then <code>pip</code> works well enough; just bootstrap the pip tool and then execute a few lines using your favorite method, on each node. Isn’t pip standard in Python 3x now?  <a href="https://www.python.org/dev/peps/pep-0453/" rel="nofollow">https://www.python.org/dev/peps/pep-0453/</a></p>
+<p>Interestingly, the Jupyter project is solving similar problems. Their solutions are worth looking into a bit.</p>
+<p>I think that taking time to consider and discuss “heterogeneous environments” is a distraction, best as an addendum to the unfortunate researcher who is trying to do that..</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-72451">
+				<article id="comment-72451" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/b17b0bd45989aae5106a4ef5e53ed38c" srcset="https://secure.gravatar.com/avatar/b17b0bd45989aae5106a4ef5e53ed38c?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Juliet Hougland </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-72451" title="Posted October 28, 2015 @ 6:32 am"><time itemprop="datePublished" datetime="2015-10-28T06:32:30+00:00">October 28, 2015 at 6:32 am</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Jon and Pete,<br>
+Managing multiple environments on a cluster is a major challenge. This is where manually managing environments (e.g. with clusterssh and virtualenv) can quickly get unmanageable on a cluster. Continuum has an enterprise product called Anaconda Cluster that enables management.</p>
+<p>Dmitry,<br>
+Let me repeat your question to make sure I understand. You are asking: “Is possible to make a Python interpreters available to PySpark via network attached storage?” The answer is “maybe, if your cluster is small.” NAS systems are meant to provide access to data, so the Python processes launched by PySpark will still need to run on the hosts in your cluster. If you really want to use NAS you can use it to help distribute Python bits to your nodes, but then you should be careful as some dependencies are compiled and NAS systems have a limit to the number of clients they can support. In general, I wouldn’t recommend doing it this way.</p>
+<p>Harry,<br>
+1. This problem still exists in a cloud based infrastructure. It is possible to configure your setup scripts or configuration files to setup the Python environments you require. After this blog post, my colleague Mark Brooks sent me an example of one of his Cloudera Director configuration files that downloads and installs Python and associated needed dependencies. Essentially, you specify a bootstrap script that installs Python and pip installs required dependencies.<br>
+2. I am less familiar with R’s dependency management options. I do know that one  available option is to use Anaconda/Anaconda Cluster as it is able to manage R environments.<br>
+3. Scala and Java both have an advantage because of the JVM tooling and build systems. When you declare a decency in a pom.xml file or via SBT, you build tool has the ability to package the dependencies with the jar. You can build these jars and specify them in your spark-submit command. </p>
+<p>darkblue_d,<br>
+1. What I describe in this post is how to do that on a large cluster.<br>
+2. Jupyter does not solve similar problems.<br>
+3. Heterogeneous environments are extremely common in production environments.</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment even thread-even depth-1" id="li-comment-73155">
+				<article id="comment-73155" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/01cf119d64095e80a9e111b0c05a2c4d" srcset="https://secure.gravatar.com/avatar/01cf119d64095e80a9e111b0c05a2c4d?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Warren </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-73155" title="Posted November 23, 2015 @ 7:48 am"><time itemprop="datePublished" datetime="2015-11-23T07:48:55+00:00">November 23, 2015 at 7:48 am</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Hi Juliet,<br>
+    There’s a mistake in your Complex Dependency example.  The map doesn’t actually get executed because int_rdd.collect() won’t invoke the map that’s defined in the previous line.</p>
+<p>For a simple test, it should be:<br>
+int_rdd.map(lambda x: import_pandas(x)).collect()</p>
+<p>Unfortunately, the import fails because pandas can’t locate some required C extensions.</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-73407">
+				<article id="comment-73407" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/46450e5146aa84f9e9d9a19d91478914" srcset="https://secure.gravatar.com/avatar/46450e5146aa84f9e9d9a19d91478914?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Eric </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-73407" title="Posted December 3, 2015 @ 8:28 am"><time itemprop="datePublished" datetime="2015-12-03T08:28:24+00:00">December 3, 2015 at 8:28 am</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Great post Juliet,<br>
+I’m interested to read your next post and to hear how/if things will change with the new distribution of CDH 5.5 which contains many updates including, I believe, Spark 1.5.</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment even thread-even depth-1" id="li-comment-73410">
+				<article id="comment-73410" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/a98287b6e02b04de9a371d61a2a4cfd5" srcset="https://secure.gravatar.com/avatar/a98287b6e02b04de9a371d61a2a4cfd5?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Uday Menon </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-73410" title="Posted December 3, 2015 @ 1:35 pm"><time itemprop="datePublished" datetime="2015-12-03T13:35:38+00:00">December 3, 2015 at 1:35 pm</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Hi Juliet,</p>
+<p>Thank you for your post. I’m glad you recommend the Anaconda python distribution when setting up virtualenvs. That is exactly the setup we have on our cluster of 5 nodes running CDH 5.4.3. Our spark-submit job runs fine in local mode but throws connection reset errors in yarn-client mode. </p>
+<p>We are working with Cloudera support on this issue (Case#: 79415; that’s how I even saw your post – they sent it to me). The first thing we tried was to set PYSPARK_PYTHON to the path to the associated Python executable in our virtualenv. That however resulted in Access Denied errors. Without this setting we get the Connection Reset error mentioned above.</p>
+<p>Any ideas on what might be causing this?</p>
+<p>Thanks<br>
+Uday</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-73714">
+				<article id="comment-73714" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/4f64c9f81bb0d4ee969aaf7b4a5a6f40" srcset="https://secure.gravatar.com/avatar/4f64c9f81bb0d4ee969aaf7b4a5a6f40?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Moussa </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-73714" title="Posted December 22, 2015 @ 6:58 am"><time itemprop="datePublished" datetime="2015-12-22T06:58:01+00:00">December 22, 2015 at 6:58 am</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Great post Juliet!<br>
+Readers might be interested in contributing to this repo that uses the conda installation method instead of the virtualenv method. And no dependency on ssh access to the Hadoop worker nodes.<br>
+<a href="https://github.com/moutai/sparkonda" rel="nofollow">https://github.com/moutai/sparkonda</a><br>
+Thanks.</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment even thread-even depth-1" id="li-comment-75200">
+				<article id="comment-75200" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/fd18c35f260de62a67a43a430562bff2" srcset="https://secure.gravatar.com/avatar/fd18c35f260de62a67a43a430562bff2?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">ph </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-75200" title="Posted April 1, 2016 @ 2:10 pm"><time itemprop="datePublished" datetime="2016-04-01T14:10:59+00:00">April 1, 2016 at 2:10 pm</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>I think the suggestion of what to put in spark-env.sh is wrong:<br>
+if [ -n “${PYSPARK_PYTHON}” ]; then<br>
+  export PYSPARK_PYTHON=<br>
+fi<br>
+This code says if PYSPARK_PYTHON is NOT empty, then export the default.  Don’t we want if it IS empty? Like:<br>
+if [ -z “${PYSPARK_PYTHON}” ]; then<br>
+  export PYSPARK_PYTHON=<br>
+fi<br>
+I wasted a day chasing this. A good lesson to not just copy and paste from blogs.</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-75201">
+				<article id="comment-75201" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/fd18c35f260de62a67a43a430562bff2" srcset="https://secure.gravatar.com/avatar/fd18c35f260de62a67a43a430562bff2?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">ph </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-75201" title="Posted April 1, 2016 @ 2:21 pm"><time itemprop="datePublished" datetime="2016-04-01T14:21:56+00:00">April 1, 2016 at 2:21 pm</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>…. but otherwise a VERY helpful blog :-)</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			<ol class="children">
+			<li class="comment byuser comment-author-jkestelyn bypostauthor even depth-2" id="li-comment-75203">
+				<article id="comment-75203" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/c4fd99e9d823e50854ddb8ae401da1ad" srcset="https://secure.gravatar.com/avatar/c4fd99e9d823e50854ddb8ae401da1ad?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Justin Kestelyn <span> Post author</span></cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-75203" title="Posted April 1, 2016 @ 4:07 pm"><time itemprop="datePublished" datetime="2016-04-01T16:07:46+00:00">April 1, 2016 at 4:07 pm</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Thank you for pointing that out, it’s fixed now.</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+			<li class="comment odd alt thread-even depth-1" id="li-comment-75654">
+				<article id="comment-75654" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/b7e0f6327d0a0676a4a6de3d7b42067a" srcset="https://secure.gravatar.com/avatar/b7e0f6327d0a0676a4a6de3d7b42067a?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Chris Cornelison </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-75654" title="Posted April 29, 2016 @ 1:54 pm"><time itemprop="datePublished" datetime="2016-04-29T13:54:58+00:00">April 29, 2016 at 1:54 pm</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>So I guess I don’t understand the point of the –py-file  option in spark-submit???<br>
+If I zip up the contents of my virtualenv’s site-packages directory, can’t the Spark framework deliver this to the executors and make sure it is on the PYTHON_PATH?<br>
+So far in my experiments, the zip file gets copied, but it doesn’t appear to get uncompressed (i.e. missing modules in import statements).</p>
+<p>Thanks,<br>
+Chris</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment even thread-odd thread-alt depth-1" id="li-comment-78380">
+				<article id="comment-78380" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/8ece76947115c52d109008e962ed1542" srcset="https://secure.gravatar.com/avatar/8ece76947115c52d109008e962ed1542?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Ankita </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-78380" title="Posted January 23, 2017 @ 1:10 am"><time itemprop="datePublished" datetime="2017-01-23T01:10:49+00:00">January 23, 2017 at 1:10 am</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Does PySpark support distributed computing for xgboost on cloudera?</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+			<li class="comment odd alt thread-even depth-1" id="li-comment-78713">
+				<article id="comment-78713" class="comment">
+					<header class="comment-meta comment-author vcard">
+						<img alt="" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/50eed8e2beb7a4bcbe4757795534457b" srcset="https://secure.gravatar.com/avatar/50eed8e2beb7a4bcbe4757795534457b?s=88&amp;d=mm&amp;r=g 2x" class="avatar avatar-44 photo" height="44" width="44"><cite class="fn">Matt </cite><a href="https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/#comment-78713" title="Posted March 11, 2017 @ 7:55 pm"><time itemprop="datePublished" datetime="2017-03-11T19:55:35+00:00">March 11, 2017 at 7:55 pm</time></a>					</header> <!-- .comment-meta -->
+
+					
+					<section class="comment-content comment">
+						<p>Before doing pip installs, you should activate the virtualenv. In the example, virtualenv is not activated. This would lead packages to get installed in the current environment.</p>
+<p>virtualenv<br>
+source /bin/activate<br>
+pip install numpy<br>
+pip install scipy<br>
+pip freeze # to list all packages installed on<br>
+deactivate # to deactivate the virtualenv</p>
+											</section> <!-- .comment-content -->
+
+					<div class="reply">
+											</div> <!-- .reply -->
+				</article> <!-- #comment-## -->
+			</li><!-- #comment-## -->
+		</ol> <!-- /.commentlist -->
+
+		
+	
+	
+</section> <!-- /#comments.comments-area -->
+
+							<nav role="navigation" id="nav-below" class="site-navigation post-navigation nav-single">
+			<h3 class="assistive-text">Post navigation</h3>
+
+			
+				<div class="nav-previous"><a href="https://blog.cloudera.com/blog/2015/09/introduction-to-hdfs-erasure-coding-in-apache-hadoop/" rel="prev"><span class="meta-nav"><i class="fa fa-angle-left"></i></span> Introduction to HDFS Erasure Coding in Apache Hadoop</a></div>				<div class="nav-next"><a href="https://blog.cloudera.com/blog/2015/09/recordservice-for-fine-grained-security-enforcement-across-the-hadoop-ecosystem/" rel="next">RecordService: For Fine-Grained Security Enforcement Across the Hadoop Ecosystem <span class="meta-nav"><i class="fa fa-angle-right"></i></span></a></div>
+			
+		</nav><!-- #nav-below -->
+		
+				
+			</div> <!-- /.col.grid_9_of_12 -->
+				<div class="col grid_3_of_12">
+
+		<div id="secondary" class="widget-area" role="complementary">
+			<aside id="text-3" class="widget widget_text">			<div class="textwidget"><iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" class="twitter-timeline twitter-timeline-rendered bf_frame_init" style="position: static; visibility: visible; display: inline-block; width: 520px; height: 350px; padding: 0px; border: none; max-width: 100%; min-width: 180px; margin-top: 0px; margin-bottom: 0px; min-height: 200px;" data-widget-id="652173415772590080" title="Twitter Timeline" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/saved_resource.html"></iframe>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+		</aside><aside id="categories-3" class="widget widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-524"><a href="https://blog.cloudera.com/blog/category/accumulo/">Accumulo</a> (1)
+</li>
+	<li class="cat-item cat-item-681"><a href="https://blog.cloudera.com/blog/category/altus/">Altus</a> (4)
+</li>
+	<li class="cat-item cat-item-56"><a href="https://blog.cloudera.com/blog/category/avro/">Avro</a> (21)
+</li>
+	<li class="cat-item cat-item-461"><a href="https://blog.cloudera.com/blog/category/bigtop/">Bigtop</a> (6)
+</li>
+	<li class="cat-item cat-item-482"><a href="https://blog.cloudera.com/blog/category/books/">Books</a> (13)
+</li>
+	<li class="cat-item cat-item-65"><a href="https://blog.cloudera.com/blog/category/careers/">Careers</a> (15)
+</li>
+	<li class="cat-item cat-item-60"><a href="https://blog.cloudera.com/blog/category/cdh/">CDH</a> (226)
+</li>
+	<li class="cat-item cat-item-498"><a href="https://blog.cloudera.com/blog/category/cloud-2/">Cloud</a> (52)
+</li>
+	<li class="cat-item cat-item-532"><a href="https://blog.cloudera.com/blog/category/cloudera-labs/">Cloudera Labs</a> (20)
+</li>
+	<li class="cat-item cat-item-507"><a href="https://blog.cloudera.com/blog/category/cloudera-life/">Cloudera Life</a> (7)
+</li>
+	<li class="cat-item cat-item-331"><a href="https://blog.cloudera.com/blog/category/cloudera-manager/">Cloudera Manager</a> (101)
+</li>
+	<li class="cat-item cat-item-581"><a href="https://blog.cloudera.com/blog/category/navigator/">Cloudera Navigator</a> (14)
+</li>
+	<li class="cat-item cat-item-12"><a href="https://blog.cloudera.com/blog/category/community/">Community</a> (229)
+</li>
+	<li class="cat-item cat-item-11"><a href="https://blog.cloudera.com/blog/category/data-ingestion/">Data Ingestion</a> (29)
+</li>
+	<li class="cat-item cat-item-419"><a href="https://blog.cloudera.com/blog/category/data-science/">Data Science</a> (70)
+</li>
+	<li class="cat-item cat-item-499"><a href="https://blog.cloudera.com/blog/category/events/">Events</a> (59)
+</li>
+	<li class="cat-item cat-item-69"><a href="https://blog.cloudera.com/blog/category/flume/">Flume</a> (29)
+</li>
+	<li class="cat-item cat-item-3"><a href="https://blog.cloudera.com/blog/category/general/">General</a> (349)
+</li>
+	<li class="cat-item cat-item-527"><a href="https://blog.cloudera.com/blog/category/graph-processing/">Graph Processing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="https://blog.cloudera.com/blog/category/guest/">Guest</a> (132)
+</li>
+	<li class="cat-item cat-item-6"><a href="https://blog.cloudera.com/blog/category/hadoop/">Hadoop</a> (394)
+</li>
+	<li class="cat-item cat-item-525"><a href="https://blog.cloudera.com/blog/category/hardware/">Hardware</a> (7)
+</li>
+	<li class="cat-item cat-item-52"><a href="https://blog.cloudera.com/blog/category/hbase/">HBase</a> (165)
+</li>
+	<li class="cat-item cat-item-20"><a href="https://blog.cloudera.com/blog/category/hdfs/">HDFS</a> (67)
+</li>
+	<li class="cat-item cat-item-10"><a href="https://blog.cloudera.com/blog/category/hive/">Hive</a> (84)
+</li>
+	<li class="cat-item cat-item-495"><a href="https://blog.cloudera.com/blog/category/how-to/">How-to</a> (127)
+</li>
+	<li class="cat-item cat-item-284"><a href="https://blog.cloudera.com/blog/category/hue/">Hue</a> (45)
+</li>
+	<li class="cat-item cat-item-489"><a href="https://blog.cloudera.com/blog/category/impala/">Impala</a> (128)
+</li>
+	<li class="cat-item cat-item-529"><a href="https://blog.cloudera.com/blog/category/kafka/">Kafka</a> (24)
+</li>
+	<li class="cat-item cat-item-515"><a href="https://blog.cloudera.com/blog/category/kite-sdk/">Kite SDK</a> (17)
+</li>
+	<li class="cat-item cat-item-562"><a href="https://blog.cloudera.com/blog/category/kudu/">Kudu</a> (18)
+</li>
+	<li class="cat-item cat-item-486"><a href="https://blog.cloudera.com/blog/category/mahout-2/">Mahout</a> (5)
+</li>
+	<li class="cat-item cat-item-15"><a href="https://blog.cloudera.com/blog/category/mapreduce/">MapReduce</a> (75)
+</li>
+	<li class="cat-item cat-item-479"><a href="https://blog.cloudera.com/blog/category/meet-the-engineer/">Meet the Engineer</a> (23)
+</li>
+	<li class="cat-item cat-item-533"><a href="https://blog.cloudera.com/blog/category/metadata-and-lineage/">Metadata and Lineage</a> (4)
+</li>
+	<li class="cat-item cat-item-97"><a href="https://blog.cloudera.com/blog/category/oozie/">Oozie</a> (28)
+</li>
+	<li class="cat-item cat-item-478"><a href="https://blog.cloudera.com/blog/category/ops/">Ops and DevOps</a> (36)
+</li>
+	<li class="cat-item cat-item-526"><a href="https://blog.cloudera.com/blog/category/parquet-2/">Parquet</a> (19)
+</li>
+	<li class="cat-item cat-item-530"><a href="https://blog.cloudera.com/blog/category/performance/">Performance</a> (37)
+</li>
+	<li class="cat-item cat-item-31"><a href="https://blog.cloudera.com/blog/category/pig/">Pig</a> (37)
+</li>
+	<li class="cat-item cat-item-505"><a href="https://blog.cloudera.com/blog/category/security-2/">Platform Security &amp; Cybersecurity</a> (49)
+</li>
+	<li class="cat-item cat-item-519"><a href="https://blog.cloudera.com/blog/category/quickstart-vm/">QuickStart VM</a> (8)
+</li>
+	<li class="cat-item cat-item-517"><a href="https://blog.cloudera.com/blog/category/search/">Search</a> (40)
+</li>
+	<li class="cat-item cat-item-531"><a href="https://blog.cloudera.com/blog/category/sentry/">Sentry</a> (8)
+</li>
+	<li class="cat-item cat-item-522"><a href="https://blog.cloudera.com/blog/category/spark/">Spark</a> (106)
+</li>
+	<li class="cat-item cat-item-40"><a href="https://blog.cloudera.com/blog/category/sqoop/">Sqoop</a> (24)
+</li>
+	<li class="cat-item cat-item-465"><a href="https://blog.cloudera.com/blog/category/support/">Support</a> (5)
+</li>
+	<li class="cat-item cat-item-42"><a href="https://blog.cloudera.com/blog/category/testing/">Testing</a> (17)
+</li>
+	<li class="cat-item cat-item-480"><a href="https://blog.cloudera.com/blog/category/tools/">Tools</a> (15)
+</li>
+	<li class="cat-item cat-item-24"><a href="https://blog.cloudera.com/blog/category/training-2/">Training</a> (47)
+</li>
+	<li class="cat-item cat-item-281"><a href="https://blog.cloudera.com/blog/category/use-case/">Use Case</a> (92)
+</li>
+	<li class="cat-item cat-item-488"><a href="https://blog.cloudera.com/blog/category/yarn/">YARN</a> (22)
+</li>
+	<li class="cat-item cat-item-39"><a href="https://blog.cloudera.com/blog/category/zookeeper/">ZooKeeper</a> (28)
+</li>
+		</ul>
+</aside><aside id="pages-3" class="widget widget_pages"><h3 class="widget-title">Popular</h3>		<ul>
+			<li class="page_item page-item-32312"><a href="https://blog.cloudera.com/most-popular/">Most Popular</a></li>
+<li class="page_item page-item-32316"><a href="https://blog.cloudera.com/most-popular-in-spark/">Most Popular in /spark/</a></li>
+		</ul>
+		</aside><aside id="tag_cloud-3" class="widget widget_tag_cloud"><h3 class="widget-title">Tags</h3><div class="tagcloud"><a href="https://blog.cloudera.com/blog/tag/analysis/" class="tag-cloud-link tag-link-193 tag-link-position-1" style="font-size: 12.565217391304pt;" aria-label="analysis (199 items)">analysis</a>
+<a href="https://blog.cloudera.com/blog/tag/analytics/" class="tag-cloud-link tag-link-487 tag-link-position-2" style="font-size: 11.95652173913pt;" aria-label="analytics (179 items)">analytics</a>
+<a href="https://blog.cloudera.com/blog/tag/apache/" class="tag-cloud-link tag-link-117 tag-link-position-3" style="font-size: 21.847826086957pt;" aria-label="apache (807 items)">apache</a>
+<a href="https://blog.cloudera.com/blog/tag/apache-hadoop/" class="tag-cloud-link tag-link-80 tag-link-position-4" style="font-size: 19.717391304348pt;" aria-label="apache hadoop (586 items)">apache hadoop</a>
+<a href="https://blog.cloudera.com/blog/tag/apache-hbase/" class="tag-cloud-link tag-link-417 tag-link-position-5" style="font-size: 13.326086956522pt;" aria-label="Apache HBase (222 items)">Apache HBase</a>
+<a href="https://blog.cloudera.com/blog/tag/apache-hive/" class="tag-cloud-link tag-link-318 tag-link-position-6" style="font-size: 11.5pt;" aria-label="apache hive (169 items)">apache hive</a>
+<a href="https://blog.cloudera.com/blog/tag/beta/" class="tag-cloud-link tag-link-355 tag-link-position-7" style="font-size: 8.9130434782609pt;" aria-label="beta (114 items)">beta</a>
+<a href="https://blog.cloudera.com/blog/tag/big-data/" class="tag-cloud-link tag-link-474 tag-link-position-8" style="font-size: 13.478260869565pt;" aria-label="Big Data (226 items)">Big Data</a>
+<a href="https://blog.cloudera.com/blog/tag/cdh/" class="tag-cloud-link tag-link-547 tag-link-position-9" style="font-size: 16.521739130435pt;" aria-label="CDH (358 items)">CDH</a>
+<a href="https://blog.cloudera.com/blog/tag/cloudera/" class="tag-cloud-link tag-link-62 tag-link-position-10" style="font-size: 21.695652173913pt;" aria-label="cloudera (785 items)">cloudera</a>
+<a href="https://blog.cloudera.com/blog/tag/cloudera-manager/" class="tag-cloud-link tag-link-552 tag-link-position-11" style="font-size: 12.260869565217pt;" aria-label="Cloudera Manager (189 items)">Cloudera Manager</a>
+<a href="https://blog.cloudera.com/blog/tag/community/" class="tag-cloud-link tag-link-536 tag-link-position-12" style="font-size: 16.065217391304pt;" aria-label="Community (337 items)">Community</a>
+<a href="https://blog.cloudera.com/blog/tag/configuration/" class="tag-cloud-link tag-link-25 tag-link-position-13" style="font-size: 15.152173913043pt;" aria-label="configuration (294 items)">configuration</a>
+<a href="https://blog.cloudera.com/blog/tag/data/" class="tag-cloud-link tag-link-86 tag-link-position-14" style="font-size: 21.391304347826pt;" aria-label="data (764 items)">data</a>
+<a href="https://blog.cloudera.com/blog/tag/developer/" class="tag-cloud-link tag-link-64 tag-link-position-15" style="font-size: 13.021739130435pt;" aria-label="developer (215 items)">developer</a>
+<a href="https://blog.cloudera.com/blog/tag/developers/" class="tag-cloud-link tag-link-103 tag-link-position-16" style="font-size: 13.021739130435pt;" aria-label="developers (215 items)">developers</a>
+<a href="https://blog.cloudera.com/blog/tag/development/" class="tag-cloud-link tag-link-48 tag-link-position-17" style="font-size: 13.326086956522pt;" aria-label="development (222 items)">development</a>
+<a href="https://blog.cloudera.com/blog/tag/events-2/" class="tag-cloud-link tag-link-500 tag-link-position-18" style="font-size: 8.1521739130435pt;" aria-label="events (102 items)">events</a>
+<a href="https://blog.cloudera.com/blog/tag/flume/" class="tag-cloud-link tag-link-549 tag-link-position-19" style="font-size: 10.586956521739pt;" aria-label="Flume (148 items)">Flume</a>
+<a href="https://blog.cloudera.com/blog/tag/hadoop/" class="tag-cloud-link tag-link-534 tag-link-position-20" style="font-size: 22pt;" aria-label="Hadoop (835 items)">Hadoop</a>
+<a href="https://blog.cloudera.com/blog/tag/hadoop_world/" class="tag-cloud-link tag-link-71 tag-link-position-21" style="font-size: 9.2173913043478pt;" aria-label="hadoop world (118 items)">hadoop world</a>
+<a href="https://blog.cloudera.com/blog/tag/hbase/" class="tag-cloud-link tag-link-545 tag-link-position-22" style="font-size: 16.826086956522pt;" aria-label="HBase (377 items)">HBase</a>
+<a href="https://blog.cloudera.com/blog/tag/hdfs/" class="tag-cloud-link tag-link-538 tag-link-position-23" style="font-size: 17.739130434783pt;" aria-label="HDFS (435 items)">HDFS</a>
+<a href="https://blog.cloudera.com/blog/tag/hive/" class="tag-cloud-link tag-link-535 tag-link-position-24" style="font-size: 15.760869565217pt;" aria-label="Hive (325 items)">Hive</a>
+<a href="https://blog.cloudera.com/blog/tag/hue/" class="tag-cloud-link tag-link-551 tag-link-position-25" style="font-size: 9.8260869565217pt;" aria-label="Hue (131 items)">Hue</a>
+<a href="https://blog.cloudera.com/blog/tag/impala-2/" class="tag-cloud-link tag-link-491 tag-link-position-26" style="font-size: 13.173913043478pt;" aria-label="impala (219 items)">impala</a>
+<a href="https://blog.cloudera.com/blog/tag/installation/" class="tag-cloud-link tag-link-333 tag-link-position-27" style="font-size: 9.5217391304348pt;" aria-label="installation (124 items)">installation</a>
+<a href="https://blog.cloudera.com/blog/tag/java/" class="tag-cloud-link tag-link-396 tag-link-position-28" style="font-size: 14.847826086957pt;" aria-label="java (280 items)">java</a>
+<a href="https://blog.cloudera.com/blog/tag/log/" class="tag-cloud-link tag-link-101 tag-link-position-29" style="font-size: 11.95652173913pt;" aria-label="log (180 items)">log</a>
+<a href="https://blog.cloudera.com/blog/tag/logs/" class="tag-cloud-link tag-link-51 tag-link-position-30" style="font-size: 9.3695652173913pt;" aria-label="logs (123 items)">logs</a>
+<a href="https://blog.cloudera.com/blog/tag/mapreduce/" class="tag-cloud-link tag-link-537 tag-link-position-31" style="font-size: 16.673913043478pt;" aria-label="MapReduce (370 items)">MapReduce</a>
+<a href="https://blog.cloudera.com/blog/tag/monitoring/" class="tag-cloud-link tag-link-23 tag-link-position-32" style="font-size: 8pt;" aria-label="monitoring (99 items)">monitoring</a>
+<a href="https://blog.cloudera.com/blog/tag/open-source/" class="tag-cloud-link tag-link-469 tag-link-position-33" style="font-size: 13.934782608696pt;" aria-label="open source (244 items)">open source</a>
+<a href="https://blog.cloudera.com/blog/tag/pig/" class="tag-cloud-link tag-link-540 tag-link-position-34" style="font-size: 10.282608695652pt;" aria-label="Pig (140 items)">Pig</a>
+<a href="https://blog.cloudera.com/blog/tag/platform/" class="tag-cloud-link tag-link-59 tag-link-position-35" style="font-size: 14.239130434783pt;" aria-label="platform (259 items)">platform</a>
+<a href="https://blog.cloudera.com/blog/tag/python/" class="tag-cloud-link tag-link-496 tag-link-position-36" style="font-size: 8.304347826087pt;" aria-label="python (104 items)">python</a>
+<a href="https://blog.cloudera.com/blog/tag/questions/" class="tag-cloud-link tag-link-36 tag-link-position-37" style="font-size: 10.130434782609pt;" aria-label="questions (137 items)">questions</a>
+<a href="https://blog.cloudera.com/blog/tag/release/" class="tag-cloud-link tag-link-494 tag-link-position-38" style="font-size: 14.54347826087pt;" aria-label="release (270 items)">release</a>
+<a href="https://blog.cloudera.com/blog/tag/rest/" class="tag-cloud-link tag-link-508 tag-link-position-39" style="font-size: 9.3695652173913pt;" aria-label="REST (121 items)">REST</a>
+<a href="https://blog.cloudera.com/blog/tag/search/" class="tag-cloud-link tag-link-555 tag-link-position-40" style="font-size: 10.434782608696pt;" aria-label="Search (143 items)">Search</a>
+<a href="https://blog.cloudera.com/blog/tag/security/" class="tag-cloud-link tag-link-19 tag-link-position-41" style="font-size: 10.891304347826pt;" aria-label="security (153 items)">security</a>
+<a href="https://blog.cloudera.com/blog/tag/sql/" class="tag-cloud-link tag-link-514 tag-link-position-42" style="font-size: 11.04347826087pt;" aria-label="sql (158 items)">sql</a>
+<a href="https://blog.cloudera.com/blog/tag/support-2/" class="tag-cloud-link tag-link-466 tag-link-position-43" style="font-size: 16.217391304348pt;" aria-label="Support (349 items)">Support</a>
+<a href="https://blog.cloudera.com/blog/tag/testing/" class="tag-cloud-link tag-link-544 tag-link-position-44" style="font-size: 9.2173913043478pt;" aria-label="Testing (119 items)">Testing</a>
+<a href="https://blog.cloudera.com/blog/tag/use-cases/" class="tag-cloud-link tag-link-484 tag-link-position-45" style="font-size: 10.282608695652pt;" aria-label="use cases (140 items)">use cases</a></div>
+</aside><aside id="archives-3" class="widget widget_archive"><h3 class="widget-title">Archives</h3>		<label class="screen-reader-text" for="archives-dropdown-3">Archives</label>
+		<select id="archives-dropdown-3" name="archive-dropdown" onchange="document.location.href=this.options[this.selectedIndex].value;">
+			
+			<option value="">Select Month</option>
+				<option value="https://blog.cloudera.com/blog/2017/08/"> August 2017 </option>
+	<option value="https://blog.cloudera.com/blog/2017/07/"> July 2017 </option>
+	<option value="https://blog.cloudera.com/blog/2017/06/"> June 2017 </option>
+	<option value="https://blog.cloudera.com/blog/2017/05/"> May 2017 </option>
+	<option value="https://blog.cloudera.com/blog/2017/04/"> April 2017 </option>
+	<option value="https://blog.cloudera.com/blog/2017/03/"> March 2017 </option>
+	<option value="https://blog.cloudera.com/blog/2017/02/"> February 2017 </option>
+	<option value="https://blog.cloudera.com/blog/2017/01/"> January 2017 </option>
+	<option value="https://blog.cloudera.com/blog/2016/12/"> December 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/11/"> November 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/10/"> October 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/09/"> September 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/08/"> August 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/07/"> July 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/06/"> June 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/05/"> May 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/04/"> April 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/03/"> March 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/02/"> February 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2016/01/"> January 2016 </option>
+	<option value="https://blog.cloudera.com/blog/2015/12/"> December 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/11/"> November 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/10/"> October 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/09/"> September 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/08/"> August 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/07/"> July 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/06/"> June 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/05/"> May 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/04/"> April 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/03/"> March 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/02/"> February 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2015/01/"> January 2015 </option>
+	<option value="https://blog.cloudera.com/blog/2014/12/"> December 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/11/"> November 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/10/"> October 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/09/"> September 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/08/"> August 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/07/"> July 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/06/"> June 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/05/"> May 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/04/"> April 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/03/"> March 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/02/"> February 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2014/01/"> January 2014 </option>
+	<option value="https://blog.cloudera.com/blog/2013/12/"> December 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/11/"> November 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/10/"> October 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/09/"> September 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/08/"> August 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/07/"> July 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/06/"> June 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/05/"> May 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/04/"> April 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/03/"> March 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/02/"> February 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2013/01/"> January 2013 </option>
+	<option value="https://blog.cloudera.com/blog/2012/12/"> December 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/11/"> November 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/10/"> October 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/09/"> September 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/08/"> August 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/07/"> July 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/06/"> June 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/05/"> May 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/04/"> April 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/03/"> March 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/02/"> February 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2012/01/"> January 2012 </option>
+	<option value="https://blog.cloudera.com/blog/2011/12/"> December 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/11/"> November 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/10/"> October 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/09/"> September 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/08/"> August 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/07/"> July 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/06/"> June 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/05/"> May 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/04/"> April 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/03/"> March 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/02/"> February 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2011/01/"> January 2011 </option>
+	<option value="https://blog.cloudera.com/blog/2010/12/"> December 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/11/"> November 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/10/"> October 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/09/"> September 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/08/"> August 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/07/"> July 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/06/"> June 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/05/"> May 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/04/"> April 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/03/"> March 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/02/"> February 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2010/01/"> January 2010 </option>
+	<option value="https://blog.cloudera.com/blog/2009/12/"> December 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/11/"> November 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/10/"> October 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/09/"> September 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/08/"> August 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/07/"> July 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/06/"> June 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/05/"> May 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/04/"> April 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/03/"> March 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/02/"> February 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2009/01/"> January 2009 </option>
+	<option value="https://blog.cloudera.com/blog/2008/12/"> December 2008 </option>
+	<option value="https://blog.cloudera.com/blog/2008/11/"> November 2008 </option>
+	<option value="https://blog.cloudera.com/blog/2008/10/"> October 2008 </option>
+
+		</select>
+		</aside>
+		</div> <!-- /#secondary.widget-area -->
+
+	</div> <!-- /.col.grid_3_of_12 -->
+
+	</div> <!-- /#primary.site-content.row -->
+
+
+			</div> <!-- /#maincontentcontainer -->
+
+	<div id="footercontainer">
+
+		<footer class="site-footer row" role="contentinfo">
+
+													<div class="col grid_12_of_12">
+							<div class="widget-area" role="complementary">
+								<aside id="text-4" class="widget widget_text">			<div class="textwidget"><div class="footer_left col grid_8_of_12">
+<ul>
+<li><a href="https://www.cloudera.com/partners.html">Partner</a></li>
+<li><a href="https://www.cloudera.com/developers.html">Developers</a></li>
+<li><a href="http://community.cloudera.com/">Community</a></li>
+<li><a href="https://www.cloudera.com/resources.html">Resources</a></li>
+<li><a href="https://www.cloudera.com/documentation.html">Documentation</a></li>
+<li><a href="http://jobs.jobvite.com/cloudera/">Career</a></li>
+<li><a href="https://www.cloudera.com/contact-us.html">Contact</a></li>
+</ul>
+
+<p class="footer-contact">United States: <a href="tel:18887891488">+1 888 789 1488</a><br>
+Outside the US: <a href="tel:16503620488">+1 650 362 0488</a></p>
+
+
+</div>
+<div class="footer-right col grid_4_of_12">
+<ul>
+<li><a href="https://www.linkedin.com/company/cloudera"><img src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/icon-linkedin.png"></a></li>
+<li><a href="https://www.facebook.com/cloudera"><img src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/icon-facebook.png"></a></li>
+<li><a href="https://twitter.com/cloudera"><img src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/icon-twitter.png"></a></li>
+<li><a href="https://www.cloudera.com/contact-us.html"><img src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/icon-mail.png"></a></li>
+</ul>
+<p><a href="https://www.cloudera.com/legal/terms-and-conditions.html">Terms &amp; Conditions</a> | <a href="https://www.cloudera.com/legal/policies.html">Policies</a></p>
+
+
+ <script type="text/javascript"> 
+     $('.cl-main-nav .npar[data-tab="more"]').children().first().attr('href', '#').css('cursor', 'default');
+
+    $(window).resize(function() {
+        if ($(window).width() > 760) {
+
+            if( $('.cloudera-search').hasClass('mobile-active')){
+                 $('.cloudera-search').removeClass('mobile-active');
+                  $('.cloudera-search').css('display', 'none');
+            }
+
+            $('div.cloudera-mobile-nav').addClass('mobile-hide');
+            $('nav.mk-navigation').css('background-color', '');
+            $('.mk-mobile-menu-toggle').find('span').removeClass("glyphicon-remove").addClass("glyphicon-menu-hamburger");
+            $('.mk-mobile-user').css('display', 'none');
+  
+        }
+    });
+    $('.mkSearchBtn').on('click', function(e) {
+
+        var myScontainer = '.cloudera-search';
+
+        if ($(myScontainer).hasClass('active')) {
+            $(this).css('background', '');
+            $(this).find('span').removeClass("glyphicon-remove").addClass("icon-search2");
+            $(myScontainer).css('display', 'none');
+            $(myScontainer).removeClass('active');
+
+        } else {
+            $(this).css('background', '#222');
+            $(this).find('span').addClass("glyphicon-remove").removeClass("icon-search2");
+            $(myScontainer).css('display', 'block');
+            $(myScontainer).addClass('active');
+            $(myScontainer).find('input').focus();
+
+        }
+
+    });
+    $('.mk-mobile-menu-toggle').on('click', function(e) {
+
+        e.preventDefault();
+        var myIcon = $(this).find('span');
+        var parent = $('nav.mk-navigation');
+        var target = $('div.cloudera-mobile-nav');
+        var verify = target.hasClass('mobile-hide');
+        var mkSearch = $('.cloudera-search');
+        var mkUser = $('.mk-mobile-user');
+
+        $('div.cloudera-mobile-nav li.npar .parent').addClass('chevron').css('color', '#97E2D6');
+        $('.cloudera-mobile-nav .npar[data-tab="more"]').children().first().attr('href', '#').css('cursor', 'default').removeClass('chevron');
+
+        if (verify) {
+
+            parent.css('background-color', '#222');
+            target.removeClass('mobile-hide');
+            myIcon.removeClass("glyphicon-menu-hamburger").addClass("glyphicon-remove");
+            mkSearch.css('display', 'block').addClass('mobile-active');
+            mkUser.css('display', 'block');
+            
+            /*myIcon.attr('src',
+                '/etc/designs/cloudera/clientlibs/css/assets/icons/close.png'
+            );*/
+        } else {
+            $(this).removeClass('mobile_btn_active');
+            parent.css('background-color', '');
+            target.addClass('mobile-hide');
+            myIcon.removeClass("glyphicon-remove").addClass("glyphicon-menu-hamburger");
+            $(mkSearch).css('display', 'none');
+            mkUser.css('display', 'none').removeClass('mobile-active');
+
+        }
+    });
+ </script>
+</div></div>
+		</aside>							</div>
+						</div> <!-- /.col.grid_12_of_12 -->
+											<div class="col grid_12_of_12">
+							<div class="widget-area" role="complementary">
+															</div>
+						</div> <!-- /.col.grid_12_of_12 -->
+					
+			
+		</footer> <!-- /.site-footer.row -->
+
+	</div> <!-- /.footercontainer -->
+
+</div> <!-- /.#wrapper.hfeed.site -->
+
+<script type="text/javascript" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/small-menu.js"></script>
+<script type="text/javascript" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/wp-embed.min.js"></script>
+<script type="text/javascript">_satellite.pageBottom();</script><iframe src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/satellite-58c3487b64746d2ccd00416b.html" style="display: none;" class=" bf_frame_init"></iframe>
+
+
+
+<img style="display:none" alt="Demandbase pixel" id="db_pixel_ad" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/pixel"><img style="display:none" alt="Demandbase pixel" id="db_pixel_rt" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/pixel(1)"><iframe src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/ect.html" id="db_ect" height="0" width="0" style="display: none;"></iframe><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" title="Twitter analytics iframe" src="./How-to_ Prepare Your Apache Hadoop Cluster for PySpark Jobs – Cloudera Engineering Blog_files/saved_resource(1).html"></iframe></body></html>

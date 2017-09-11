@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- saved from url=(0116)https://assets.adobedtm.com/98a3a1c24ee5de4297f8ae77cf444e0c86ff2f04/scripts/satellite-58c3487b64746d2ccd00416b.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body>
+    <script>
+      (function(){
+        function escapeForHtml(str){
+          if (!str) return str
+          return str
+            .replace(/\&/g, '&amp;')
+            .replace(/\</g, '&lt;')
+            .replace(/\>/g, '&gt;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#x27;')
+            .replace(/\//g, '&#x2F;')
+        }
+
+        var regexChars = /[.*+?^${}()|[\]\\]/g;
+        function escapeForRegex(str) {
+          return str.replace(regexChars, "\\$&");
+        }
+
+        function parseQueryString(){
+          var ret = {}, parts = location.search.substring(1).split('&');
+          for (var i = parts.length; i--;) {
+            var vardef = parts[i].split('='), varname = vardef[0], value = vardef[1];
+            ret[varname] = unescape(value);
+          }
+          return ret;
+        }
+
+        var queryParams = parseQueryString();
+
+        var markup = "<div style=\"position:absolute;\"> \n<img style=\"width:1px; height:1px;\" src=\"//servedby.flashtalking.com/spot/4/4703;50624;5220/?spotName=Cloudera_HP_10_16\"/> \n</div>";
+
+        for (var name in queryParams){
+          var regex = new RegExp('%' + escapeForRegex(name) + '%', 'ig');
+          markup = markup.replace(regex, 
+            escapeForHtml(queryParams[name]));
+        }
+
+        document.write(markup)
+      })();
+    </script><div style="position:absolute;"> 
+<img style="width: 1px; height: 1px; display: none !important;" src="https://servedby.flashtalking.com/spot/4/4703;50624;5220/?spotName=Cloudera_HP_10_16"> 
+</div>
+  
+
+</body></html>

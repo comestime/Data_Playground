@@ -12,7 +12,7 @@ def send_messages(producer):
 		#	producer.send_messages('fintech_pyspark', line)
 		# 	print line
 
-		# cannot use r.json(), since python expects property names enclosed in double quotes
+		# cannot use r.json(), since python expects property names enclosed in double quotes instead of single quotes
 		line = str(r.text.replace('\n', '').replace('  ', ' ').replace('  ', ' '))
 		# specify topic name
 		producer.send_messages('fintech_pyspark', line)

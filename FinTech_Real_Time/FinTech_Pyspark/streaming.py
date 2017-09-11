@@ -8,6 +8,7 @@ from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 from pyspark.sql import HiveContext, Row
 
+# used in local mode only
 # import trained model
 # from model import Model
 # model = Model()
@@ -40,9 +41,9 @@ def strm_json_training(x):
     """Utilize the trained model to perform prediction, and return results as JSON format"""
     # prediction_json = model.getPrediction(x)
     r = requests.post('http://fintech.dataapplab.com:33334/api/v1.0/FinTech', json = x)
-    print r.headers
+    # print r.headers
     prediction_json = r.json()
-    print(prediction_json)
+    # print(prediction_json)
     result_json = { 'member_id' : int(x['member_id']),
                     'annual_inc' : int(x['annual_inc']),
                     'funded_amnt' : int(x['funded_amnt']),
@@ -84,8 +85,8 @@ def save2hive(time, rdd):
         resultDF.show()
 
         # Perform the insertion
-        hiveCtx.sql("INSERT INTO TABLE prediction SELECT * FROM result")
-        hiveCtx.sql("SELECT * FROM prediction").show()
+        hiveCtx.sql("INSERT INTO TABLE alick_db.prediction SELECT * FROM result")
+        hiveCtx.sql("SELECT * FROM alick_db.prediction").show()
     except:
         pass
 
@@ -102,21 +103,25 @@ if __name__ == "__main__":
     else:
         zkQuorum = 'm1.mt.dataapplab.com:2181'
 
+    # master "local[2] will be overriden in cluster mode through command line
     sc = SparkContext("local[2]", appName="PythonStreamingFinTech")
     sc.setLogLevel("WARN")
+    if mode == 'cluster':
+        sc.addPyFile('lib.zip')
+
     ssc = StreamingContext(sc, 2)
     ssc.checkpoint("checkpoint")
+
     hiveCtx = HiveContext(sc)
+    print "[DEBUG] Use alick_db"
+    hiveCtx.sql("CREATE DATABASE IF NOT EXISTS alick_db")
+    print "[DEBUG] Drop table 'Prediction'"
+    hiveCtx.sql("DROP TABLE IF EXISTS alick_db.prediction")
     print "[DEBUG] Creating Hive Table..."
-    if mode == 'cluster':
-        print "[DEBUG] Use alic_db in cluster mode"
-        hiveCtx.sql("USE alick_db")
-    if mode == 'local':
-        print "[DEBUG] Drop table 'Prediction' in local mode"
-        hiveCtx.sql("DROP TABLE IF EXISTS prediction")
 	# need to match the field order in TempView "result" since the hive insertion is a simple write append to the file
-    hiveCtx.sql("CREATE TABLE IF NOT EXISTS prediction \
-                (annual_inc INT, data FLOAT, funded_amnt INT, member_id INT, status STRING)")
+    hiveCtx.sql("CREATE TABLE IF NOT EXISTS alick_db.prediction \
+                (annual_inc INT, data FLOAT, funded_amnt INT, member_id INT, status STRING) \
+                ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TextFile")
 
     kvs = KafkaUtils.createStream(ssc, zkQuorum, "1", {topic: 1})
 
