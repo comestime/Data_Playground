@@ -62,7 +62,7 @@ $ export PYTHONPATH=$SPARK_HOME/python/:$PYTHONPATH
 $ export PYTHONPATH=$SPARK_HOME/python/lib/py4j-0.10.3-src.zip:$PYTHONPATH
 
 # cluster mode
-$ spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.0.1 --master yarn --deploy-mode cluster --py-files lib.zip streaming.py cluster fintech_pyspark
+$ spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.0.1 --master yarn --deploy-mode cluster --files /usr/hdp/current/spark-client/conf/hive-site.xml --py-files lib.zip streaming.py cluster fintech_pyspark
 ```
 
 To check log file in cluster mode
@@ -91,6 +91,10 @@ Also, for complex packages that require pre-compilation, the method above won't 
 ![Snapshot 1](image/snapshot_1.png)
 
 ![Snapshot 2](image/snapshot_2.png)
+
+## Snapshot of the Application in Cluster Mode
+
+![Snapshot 3](image/snapshot_3.png)
 
 
 ## Known Problem and Future Improvements

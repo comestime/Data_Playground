@@ -42,14 +42,18 @@ def strm_json_training(x):
     # prediction_json = model.getPrediction(x)
     r = requests.post('http://fintech.dataapplab.com:33334/api/v1.0/FinTech', json = x)
     # print r.headers
-    prediction_json = r.json()
-    # print(prediction_json)
-    result_json = { 'member_id' : int(x['member_id']),
-                    'annual_inc' : int(x['annual_inc']),
-                    'funded_amnt' : int(x['funded_amnt']),
-                    'data' : float(prediction_json['data']),
-                    'status' : prediction_json['status']}
-    return result_json
+
+    try:
+        prediction_json = r.json()
+        # print(prediction_json)
+        result_json = { 'member_id' : int(x['member_id']),
+                        'annual_inc' : int(x['annual_inc']),
+                        'funded_amnt' : int(x['funded_amnt']),
+                        'data' : float(prediction_json['data']),
+                        'status' : prediction_json['status']}
+        return result_json
+    except:
+        pass
 
 
 def getSparkSessionInstance(sparkConf):
@@ -97,22 +101,28 @@ if __name__ == "__main__":
         print("Usage: streaming.py <mode> <topic>")
         exit(-1)
 
+    # Create SparkContext
     mode, topic = sys.argv[1:]
     if mode == 'local':
         zkQuorum = 'localhost:2181'
+        sc = SparkContext("local[2]", appName="PythonStreamingFinTech")
     else:
         zkQuorum = 'm1.mt.dataapplab.com:2181'
+        sc = SparkContext("yarn", appName="PythonStreamingFinTech")
 
-    # master "local[2] will be overriden in cluster mode through command line
-    sc = SparkContext("local[2]", appName="PythonStreamingFinTech")
     sc.setLogLevel("WARN")
     if mode == 'cluster':
         sc.addPyFile('lib.zip')
 
+    # Create StreamingContext
     ssc = StreamingContext(sc, 2)
     ssc.checkpoint("checkpoint")
 
-    hiveCtx = HiveContext(sc)
+    # Create HiveContext
+    if mode == 'cluster':
+        hiveCtx = SparkSession.builder.config("spark.sql.warehouse.dir", "hdfs:///apps/hive/warehouse").enableHiveSupport().getOrCreate()
+    else:
+        hiveCtx = SparkSession.builder.enableHiveSupport().getOrCreate()
     print "[DEBUG] Use alick_db"
     hiveCtx.sql("CREATE DATABASE IF NOT EXISTS alick_db")
     print "[DEBUG] Drop table 'Prediction'"
