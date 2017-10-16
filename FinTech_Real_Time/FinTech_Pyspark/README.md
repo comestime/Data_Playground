@@ -101,8 +101,6 @@ Also, for complex packages that require pre-compilation, the method above won't 
 
 1. Records are inserted to Hive in the granularity of RDD, generating too many small files in Hive internal table's metastore; HBase may be a better candidate of data warehouse in streaming application
 
-2. Cluster deployment still needs tuning
-
 
 ## References
 
