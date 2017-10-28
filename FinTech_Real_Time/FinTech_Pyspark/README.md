@@ -127,3 +127,6 @@ Also, for complex packages that require pre-compilation, the method above won't 
 
 7. Maintaining Dependencies for PySpark Jobs
 `https://blog.cloudera.com/blog/2015/09/how-to-prepare-your-apache-hadoop-cluster-for-pyspark-jobs/`
+
+8. PySpark & HBase Integration
+`https://github.com/usc-isi-i2/dig-prep/blob/master/python/spark/pyspark-hbase.py` & `http://cjcroix.blogspot.com/2015/10/pyspark-hbase-and-spark-streaming-save.html`
