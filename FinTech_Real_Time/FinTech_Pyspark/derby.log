@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Sat Oct 28 00:41:33 PDT 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-015f-61ed-c557-000009bd3208 
-on database directory /Users/comestime/Dropbox/Graduate/Application_Data_Lab/Data_Engineer/Projects/FinTech_Real_Time/FinTech_Pyspark/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@64d259e1 
+Sat Oct 28 10:14:27 PDT 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-015f-63fa-473d-000009b28c30 
+on database directory /Users/comestime/Dropbox/Graduate/Application_Data_Lab/Data_Engineer/Projects/FinTech_Real_Time/FinTech_Pyspark/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@39db6ffb 
 Loaded from file:/Library/spark-2.1.1-bin-hadoop2.7/jars/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_121-b13
