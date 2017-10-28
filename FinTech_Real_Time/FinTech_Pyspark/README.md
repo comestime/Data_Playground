@@ -1,7 +1,10 @@
 # README
 
+## Flow chart
+![FinTech Flow Chart](image/FinTech_Flow_Chart.png)
 
-## Steps to run the program:
+
+## Steps to run the application:
 
 ### 1. Prerequisites:
 * spark-2.1.1-bin-hadoop2.7 (or using `conda install -c conda-forge pyspark=2.1.1` to install pyspark packages for Anaconda)
